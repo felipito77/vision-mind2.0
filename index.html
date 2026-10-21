@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Mind | Realidad Virtual & Soluciones Inmersivas</title>
+  
+  <link rel="icon" type="image/png" href="img/vision_mind_logo.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Barra de Navegación y Encabezado Futurista -->
+  <header class="main-header">
+    <div class="nav-container">
+      <!-- Identidad Corporativa -->
+      <a href="#inicio" class="brand-link">
+        <div class="logo-wrapper">
+          <img src="img/vision_mind_logo.png" alt="Logo Vision Mind" class="header-logo">
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">VISION MIND</span>
+          <span class="brand-sub">VR &amp; IA SOLUTIONS</span>
+        </div>
+      </a>
+
+      <!-- Menú de Navegación -->
+      <nav class="nav-menu">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#vr" class="nav-link">Experiencia VR</a>
+        <a href="#servicios" class="nav-link">Servicios</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </nav>
+
+      <!-- Botón de Acceso -->
+      <div class="nav-actions">
+        <a href="login.html" class="btn-login-cta">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          Iniciar Sesión
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sección Hero / Bienvenida Futurista -->
+  <section class="hero" id="inicio">
+    <div class="hero-glow-blob blob-1"></div>
+    <div class="hero-glow-blob blob-2"></div>
+    
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        INNOVACIÓN EN REALIDAD VIRTUAL &bull; INTELIGENCIA ARTIFICIAL
+      </div>
+      
+      <h1 class="hero-title">
+        SIMULA SIN RIESGOS.<br>
+        <span class="text-gradient">DESCUBRE TU FUTURO.</span>
+      </h1>
+      
+      <p class="hero-desc">
+        Conoce nuestros productos, escenarios interactivos 3D y simulaciones de realidad virtual diseñadas para la formación profesional y la transformación tecnológica de tu empresa.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#vr" class="btn-hero-primary">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+          Explorar Experiencia VR
+        </a>
+        <a href="login.html" class="btn-hero-secondary">
+          Acceder a la Plataforma &rarr;
+        </a>
+      </div>
+
+      <div class="hero-features-chips">
+        <span class="chip">🕶️ Inmersión 360°</span>
+        <span class="chip">🤖 Integración con IA</span>
+        <span class="chip">🎓 Carreras Profesionales</span>
+        <span class="chip">⚡ Renderizado WebVR</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Experiencia VR, Pestañas y Visor -->
+  <section class="vr-section" id="vr">
+    <div class="section-header">
+      <span class="section-tag">SIMULADORES VOCACIONALES</span>
+      <h2 class="section-title">Simuladores VR de Carreras Universitarias</h2>
+      <p class="section-desc">Selecciona una carrera profesional para interactuar en tiempo real con su quirófano, cocina gourmet, laboratorio tecnológico, estudio o hangar espacial.</p>
+    </div>
+
+    <!-- Pestañas de Navegación 3D por Carrera -->
+    <div class="tabs-container">
+      <div class="tabs" role="tablist">
+        <button class="tab-btn active" onclick="cargarTab('medicina.html', this)">
+          <span>🩺</span> Medicina (Quirófano)
+        </button>
+        <button class="tab-btn" onclick="cargarTab('gastronomia.html', this)">
+          <span>🍳</span> Gastronomía (Alta Cocina)
+        </button>
+        <button class="tab-btn" onclick="cargarTab('sistemas.html', this)">
+          <span>💻</span> Ing. de Sistemas &amp; IA
+        </button>
+        <button class="tab-btn" onclick="cargarTab('arquitectura.html', this)">
+          <span>📐</span> Arquitectura &amp; Diseño
+        </button>
+        <button class="tab-btn" onclick="cargarTab('aeroespacial.html', this)">
+          <span>🚀</span> Ing. Aeroespacial
+        </button>
+        <button class="tab-btn" onclick="cargarTab('idiomas.html', this)">
+          <span>🌐</span> Licenciatura en Idiomas
+        </button>
+      </div>
+    </div>
+
+    <!-- Marco Tecnológico del Visor VR -->
+    <div class="visor-wrapper">
+      <div class="visor-topbar">
+        <div class="visor-dots">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="visor-title">
+          <span class="live-indicator"></span>
+          VISOR VR EN VIVO &bull; VISION MIND SIMULATOR
+        </div>
+        <div class="visor-controls">
+          <span class="visor-badge">INTERACTIVO: WASD + MOUSE</span>
+        </div>
+      </div>
+      <iframe id="visor" src="medicina.html" title="Simulador VR de Carreras Profesionales - Vision Mind"></iframe>
+    </div>
+  </section>
+
+  <!-- Sección de Servicios -->
+  <section class="servicios" id="servicios">
+    <div class="section-header">
+      <span class="section-tag">SOLUCIONES TECNOLÓGICAS</span>
+      <h2 class="section-title">¿Qué Ofrecemos en Vision Mind?</h2>
+      <p class="section-desc">Herramientas de vanguardia diseñadas para llevar el aprendizaje y las operaciones al siguiente nivel.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="service-card">
+        <div class="card-icon-frame icon-aguamarina">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+            <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v-2h3v2zm6 0h-3v-2h3v2z"/>
+          </svg>
+        </div>
+        <h3>Realidad Virtual</h3>
+        <p>Experiencias inmersivas hiperrealistas y simulaciones 3D interactivas para clientes, empresas y educación técnica sin riesgos.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="card-icon-frame icon-blue">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
+          </svg>
+        </div>
+        <h3>Desarrollo Web &amp; 3D</h3>
+        <p>Sitios modernos y plataformas WebGL/A-Frame adaptables a cualquier dispositivo con máxima fluidez y alto impacto visual.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="card-icon-frame icon-red">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+        </div>
+        <h3>Innovación Digital con IA</h3>
+        <p>Transformación digital impulsada por Inteligencia Artificial y simuladores profesionales para potenciar vocaciones y proyectos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pie de Página (Footer) -->
+  <footer id="contacto">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="img/vision_mind_logo.png" alt="Logo Vision Mind" class="footer-logo">
+        <h3>VISION MIND</h3>
+        <p>Descubre tu pasión &bull; Construye tu futuro</p>
+      </div>
+      <div class="footer-contact">
+        <h4>Contacto Directo</h4>
+        <p><a href="mailto:correo@empresa.com">correo@empresa.com</a></p>
+        <p>+57 300 000 0000</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Vision Mind. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Licenciatura en Idiomas: Salon Inmersivo | Vision Mind</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+
+  <!-- Panel HUD Interactivo de Idiomas -->
+  <div class="panel">
+    <div class="panel-header-badge">
+      <span>&#127760;</span> COMUNICACION, CULTURA &amp; TRADUCCION GLOBAL
+    </div>
+    <h2>&#128218; Licenciatura en Idiomas: Salon de Lenguas</h2>
+    <p>
+      Bienvenido al salon de inmersion linguistica. Con el mouse orienta tu angulo visual y con <strong>WASD</strong> o las <strong>flechas</strong> recorre el espacio.
+    </p>
+    <p>
+      Apunta con el cursor al tablero multilingue, los libros, los audifonos del laboratorio y el mapa cultural para descubrir informacion de la carrera.
+    </p>
+    <div class="panel-stat">
+      <span>Elementos del salon explorados:</span>
+      <span id="contador">0</span>
+    </div>
+    <div id="feedback" class="hud-feedback">
+      Apunta al tablero o a los libros de idiomas para comenzar...
+    </div>
+    <div class="panel-controls-hint">
+      <span>&#127919; Cursor activo</span> &bull; <span>&#128483;&#65039; Modo inmersion linguistica</span>
+    </div>
+  </div>
+
+  <a-scene>
+    <!-- CAMARA CON CURSOR INTERACTIVO -->
+    <a-entity position="0 1.6 4.5">
+      <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 18">
+        <a-cursor
+          id="cursor"
+          color="#f59e0b"
+          fuse="true"
+          fuse-timeout="700"
+          raycaster="objects: .interactivo, .producto"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 700; from: 1 1 1; to: 0.2 0.2 0.2"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeOutCubic; dur: 200; to: 1 1 1">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- ILUMINACION DEL SALON -->
+    <a-light type="ambient" color="#fffde7" intensity="0.75"></a-light>
+    <a-light type="spot" position="0 5.5 0" angle="70" penumbra="0.25" color="#fff9c4" intensity="1.8"></a-light>
+    <a-light type="point" position="-4 4 -2" color="#fce4ec" intensity="0.6"></a-light>
+    <a-light type="point" position="4 4 -2" color="#e3f2fd" intensity="0.6"></a-light>
+
+    <!-- PISO BALDOSA -->
+    <a-plane rotation="-90 0 0" width="16" height="18" color="#f5f5f5" material="roughness: 0.55; metalness: 0.05"></a-plane>
+
+    <!-- TECHO -->
+    <a-plane rotation="90 0 0" position="0 5.8 0" width="16" height="18" color="#fafafa" material="roughness: 0.9"></a-plane>
+
+    <!-- PAREDES -->
+    <a-box position="0 3 -8.8" width="16" height="6" depth="0.3" color="#e8f5e9"></a-box>
+    <a-box position="0 3 8.8" width="16" height="6" depth="0.3" color="#f3e5f5"></a-box>
+    <a-box position="-7.8 3 0" rotation="0 90 0" width="18" height="6" depth="0.3" color="#e3f2fd"></a-box>
+    <a-box position="7.8 3 0" rotation="0 -90 0" width="18" height="6" depth="0.3" color="#e3f2fd"></a-box>
+
+    <!-- TABLERO VERDE MULTILINGUE -->
+    <a-box position="0 2.6 -8.5" width="9.6" height="3.2" depth="0.12" color="#5d4037"></a-box>
+    <a-plane
+      class="interactivo"
+      position="0 2.6 -8.42"
+      width="9.2" height="3.0"
+      color="#2e7d32"
+      data-info="Tablero multilingue: La carrera forma licenciados en ingles, frances, espanol y mas idiomas con enfasis en didactica y traduccion"
+      data-sound="success"
+      material="roughness: 0.9">
+    </a-plane>
+    <a-text value="Hello! | Bonjour! | Ciao! | Hallo! | Ola!" position="0 3.4 -8.38" align="center" scale="0.55 0.55 0.55" color="#ffffff"></a-text>
+    <a-text value="Bienvenidos a la Licenciatura en Idiomas!" position="0 2.85 -8.38" align="center" scale="0.44 0.44 0.44" color="#fffde7"></a-text>
+    <a-text value="Competencia Comunicativa | Traduccion | Didactica de Lenguas" position="0 2.35 -8.38" align="center" scale="0.34 0.34 0.34" color="#a5d6a7"></a-text>
+    <a-text value="Ingles  |  Frances  |  Aleman  |  Italiano  |  Portugues" position="0 1.9 -8.38" align="center" scale="0.32 0.32 0.32" color="#fff59d"></a-text>
+    <a-box position="3.8 1.3 -8.38" width="0.5" height="0.15" depth="0.06" color="#e0e0e0"></a-box>
+
+    <!-- LETRERO DE CARRERA sobre el tablero -->
+    <a-box position="0 5.2 -8.62" width="10" height="0.7" depth="0.15" color="#1a237e"></a-box>
+    <a-text value="LICENCIATURA EN IDIOMAS  -  UNIVERSIDAD  -  VISION MIND" position="0 5.2 -8.55" align="center" scale="0.5 0.5 0.5" color="#f59e0b"></a-text>
+
+    <!-- ESCRITORIO DEL PROFESOR -->
+    <a-box position="0 0.42 -6.2" width="3.5" height="0.08" depth="1.2" color="#8d6e63"></a-box>
+    <a-box position="-1.6 0.21 -6.2" width="0.1" height="0.42" depth="1.1" color="#795548"></a-box>
+    <a-box position="1.6 0.21 -6.2" width="0.1" height="0.42" depth="1.1" color="#795548"></a-box>
+
+    <!-- Silla del profesor -->
+    <a-box position="0 0.48 -5.5" width="0.6" height="0.06" depth="0.6" color="#5d4037"></a-box>
+    <a-box position="0 0.8 -5.2" width="0.6" height="0.65" depth="0.06" color="#5d4037"></a-box>
+    <a-cylinder position="-0.25 0.24 -5.5" radius="0.03" height="0.48" color="#4e342e"></a-cylinder>
+    <a-cylinder position="0.25 0.24 -5.5" radius="0.03" height="0.48" color="#4e342e"></a-cylinder>
+    <a-cylinder position="-0.25 0.24 -5.8" radius="0.03" height="0.48" color="#4e342e"></a-cylinder>
+    <a-cylinder position="0.25 0.24 -5.8" radius="0.03" height="0.48" color="#4e342e"></a-cylinder>
+
+    <!-- Laptop del profesor (Interactivo) -->
+    <a-entity class="interactivo" position="-0.6 0.46 -6.2" data-info="Plataforma digital docente: herramientas e-learning, evaluacion oral y portafolios linguisticos en linea" data-sound="action">
+      <a-box position="0 0.04 0" width="0.6" height="0.025" depth="0.42" color="#212121"></a-box>
+      <a-box position="0 0.2 -0.19" width="0.58" height="0.32" depth="0.02" color="#1a237e"></a-box>
+      <a-plane position="0 0.2 -0.18" width="0.54" height="0.28" color="#1565c0" material="emissive: #1565c0; emissiveIntensity: 0.4"></a-plane>
+      <a-text value="e-Learning Idiomas" position="0 0.2 -0.17" align="center" scale="0.12 0.12 0.12" color="#ffffff"></a-text>
+    </a-entity>
+
+    <!-- Libro sobre el escritorio -->
+    <a-box position="0.8 0.5 -6.2" width="0.3" height="0.38" depth="0.04" color="#1976d2"></a-box>
+    <a-text value="Grammar" position="0.8 0.5 -6.17" align="center" scale="0.1 0.1 0.1" color="#ffffff"></a-text>
+
+    <!-- PUPITRES FILA 1 -->
+    <a-entity position="-2.4 0 -4.2">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="0 0 -4.2">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="2.4 0 -4.2">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+
+    <!-- PUPITRES FILA 2 -->
+    <a-entity position="-2.4 0 -1.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="0 0 -1.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="2.4 0 -1.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+
+    <!-- PUPITRES FILA 3 -->
+    <a-entity position="-2.4 0 0.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="0 0 0.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+    <a-entity position="2.4 0 0.8">
+      <a-box position="0 0.38 0" width="0.9" height="0.06" depth="0.65" color="#a1887f"></a-box>
+      <a-box position="-0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+      <a-box position="0.38 0.19 0" width="0.05" height="0.38" depth="0.6" color="#8d6e63"></a-box>
+    </a-entity>
+
+    <!-- ESTANTERIA PARED DERECHA -->
+    <a-box position="6.6 1.8 -3" width="0.25" height="3.6" depth="2.5" color="#6d4c41"></a-box>
+    <a-box position="5.1 0.08 -3" width="2.6" height="0.12" depth="2.5" color="#5d4037"></a-box>
+    <a-box position="5.1 1.2 -3" width="2.6" height="0.1" depth="2.5" color="#5d4037"></a-box>
+    <a-box position="5.1 2.4 -3" width="2.6" height="0.1" depth="2.5" color="#5d4037"></a-box>
+    <a-box position="5.1 3.6 -3" width="2.6" height="0.1" depth="2.5" color="#5d4037"></a-box>
+
+    <!-- Libros estante fila baja (Interactivo) -->
+    <a-entity class="interactivo" position="5.1 0.7 -3" data-info="Biblioteca de linguistica: gramaticas contrastivas, diccionarios bilingues, fonologia y semantica aplicada" data-sound="success">
+      <a-box position="-0.6 0 0" width="0.18" height="0.55" depth="0.3" color="#e53935"></a-box>
+      <a-box position="-0.38 0 0" width="0.16" height="0.5" depth="0.3" color="#1e88e5"></a-box>
+      <a-box position="-0.18 0 0" width="0.14" height="0.52" depth="0.3" color="#43a047"></a-box>
+      <a-box position="0.0 0 0" width="0.18" height="0.48" depth="0.3" color="#fb8c00"></a-box>
+      <a-box position="0.2 0 0" width="0.15" height="0.54" depth="0.3" color="#8e24aa"></a-box>
+      <a-box position="0.38 0 0" width="0.17" height="0.5" depth="0.3" color="#00897b"></a-box>
+      <a-box position="0.56 0 0" width="0.14" height="0.46" depth="0.3" color="#f4511e"></a-box>
+    </a-entity>
+
+    <!-- Libros estante fila media -->
+    <a-entity position="5.1 1.9 -3">
+      <a-box position="-0.6 0 0" width="0.18" height="0.55" depth="0.3" color="#546e7a"></a-box>
+      <a-box position="-0.38 0 0" width="0.14" height="0.5" depth="0.3" color="#ff7043"></a-box>
+      <a-box position="-0.18 0 0" width="0.16" height="0.52" depth="0.3" color="#26a69a"></a-box>
+      <a-box position="0.0 0 0" width="0.18" height="0.48" depth="0.3" color="#5c6bc0"></a-box>
+      <a-box position="0.2 0 0" width="0.15" height="0.56" depth="0.3" color="#d81b60"></a-box>
+      <a-box position="0.38 0 0" width="0.17" height="0.5" depth="0.3" color="#7cb342"></a-box>
+    </a-entity>
+
+    <!-- LABORATORIO DE IDIOMAS (Pared Izquierda) -->
+    <a-box position="-5.5 0.42 -3.5" width="0.12" height="0.84" depth="3.5" color="#bf360c"></a-box>
+    <a-box position="-5.5 0.84 -3.5" width="2.4" height="0.06" depth="3.5" color="#efebe9"></a-box>
+
+    <!-- Audifonos estacion 1 (Interactivo) -->
+    <a-entity class="interactivo" position="-5.2 1.02 -4.5" data-info="Laboratorio de idiomas: cabinas de escucha activa, pronunciacion asistida por IA y practicas conversacionales en tiempo real" data-sound="ecg">
+      <a-torus position="0 0.08 0" rotation="0 0 90" radius="0.12" radius-tubular="0.025" color="#212121"></a-torus>
+      <a-cylinder position="-0.12 0.0 0" radius="0.05" height="0.04" color="#37474f"></a-cylinder>
+      <a-cylinder position="0.12 0.0 0" radius="0.05" height="0.04" color="#37474f"></a-cylinder>
+      <a-cylinder position="0 -0.08 0" radius="0.01" height="0.2" color="#424242"></a-cylinder>
+    </a-entity>
+
+    <!-- Audifonos estacion 2 (Interactivo) -->
+    <a-entity class="interactivo" position="-5.2 1.02 -2.8" data-info="Practica de listening: mas de 200 ejercicios de comprension oral en ingles, frances y aleman con retroalimentacion automatica" data-sound="ecg">
+      <a-torus position="0 0.08 0" rotation="0 0 90" radius="0.12" radius-tubular="0.025" color="#1a237e"></a-torus>
+      <a-cylinder position="-0.12 0.0 0" radius="0.05" height="0.04" color="#283593"></a-cylinder>
+      <a-cylinder position="0.12 0.0 0" radius="0.05" height="0.04" color="#283593"></a-cylinder>
+      <a-cylinder position="0 -0.08 0" radius="0.01" height="0.2" color="#424242"></a-cylinder>
+    </a-entity>
+
+    <!-- Pantalla del laboratorio pared izquierda (Interactivo) -->
+    <a-entity class="interactivo" position="-7.6 2.5 -3.5" data-info="Software de fonetica: analisis espectral de voz, correccion de pronunciacion y modelos nativos de 8 variedades dialectales" data-sound="action">
+      <a-box position="0 0 0" width="0.15" height="1.8" depth="2.8" color="#212121"></a-box>
+      <a-plane position="0.08 0 0" rotation="0 90 0" width="2.6" height="1.6" color="#0d1b2a"></a-plane>
+      <a-text value="Analisis Fonetico EN / FR / DE" position="0.09 0.2 0" rotation="0 90 0" align="center" scale="0.28 0.28 0.28" color="#f59e0b"></a-text>
+      <a-text value="Pronunciacion IA | Nivel B2-C2" position="0.09 -0.2 0" rotation="0 90 0" align="center" scale="0.22 0.22 0.22" color="#a5f3fc"></a-text>
+    </a-entity>
+
+    <!-- MAPA CULTURAL MUNDIAL pared derecha (Interactivo) -->
+    <a-entity class="interactivo" position="7.6 3.2 -0.5" data-info="Mapa de culturas y regiones: estudios interculturales, movilidad academica internacional y programas de inmersion en el extranjero" data-sound="success">
+      <a-box position="0 0 0" width="0.12" height="2.2" depth="3.6" color="#4e342e"></a-box>
+      <a-plane position="0.07 0 0" rotation="0 90 0" width="3.4" height="2.0" color="#1565c0"></a-plane>
+      <a-plane position="0.08 0.3 0.6" rotation="0 90 0" width="0.7" height="0.5" color="#81c784"></a-plane>
+      <a-plane position="0.08 0.1 -0.4" rotation="0 90 0" width="0.9" height="0.9" color="#aed581"></a-plane>
+      <a-plane position="0.08 0.2 1.1" rotation="0 90 0" width="0.5" height="0.6" color="#a5d6a7"></a-plane>
+      <a-plane position="0.08 -0.3 0.2" rotation="0 90 0" width="0.6" height="0.5" color="#c8e6c9"></a-plane>
+      <a-text value="Movilidad Internacional" position="0.09 -0.75 0" rotation="0 90 0" align="center" scale="0.22 0.22 0.22" color="#ffffff"></a-text>
+    </a-entity>
+
+    <!-- BANDERINES pared trasera -->
+    <a-cylinder position="0 4.6 7.6" rotation="0 0 90" radius="0.012" height="12" color="#795548"></a-cylinder>
+    <!-- Ingles -->
+    <a-entity position="-4.5 4.1 7.62" rotation="0 180 0">
+      <a-plane width="0.55" height="0.38" color="#012169"></a-plane>
+      <a-plane position="0 0 0.01" width="0.1" height="0.38" color="#ffffff"></a-plane>
+      <a-plane position="0 0 0.01" width="0.55" height="0.06" color="#ffffff"></a-plane>
+      <a-plane position="0 0 0.01" width="0.55" height="0.03" color="#c8102e"></a-plane>
+      <a-plane position="0 0 0.01" width="0.04" height="0.38" color="#c8102e"></a-plane>
+    </a-entity>
+    <!-- Frances -->
+    <a-entity position="-1.5 4.1 7.62" rotation="0 180 0">
+      <a-plane position="-0.18 0 0" width="0.18" height="0.38" color="#002395"></a-plane>
+      <a-plane position="0 0 0" width="0.18" height="0.38" color="#ffffff"></a-plane>
+      <a-plane position="0.18 0 0" width="0.18" height="0.38" color="#ed2939"></a-plane>
+    </a-entity>
+    <!-- Aleman -->
+    <a-entity position="1.5 4.1 7.62" rotation="0 180 0">
+      <a-plane position="0 0.13 0" width="0.55" height="0.12" color="#000000"></a-plane>
+      <a-plane position="0 0 0" width="0.55" height="0.12" color="#dd0000"></a-plane>
+      <a-plane position="0 -0.13 0" width="0.55" height="0.12" color="#ffce00"></a-plane>
+    </a-entity>
+    <!-- Italiano -->
+    <a-entity position="4.5 4.1 7.62" rotation="0 180 0">
+      <a-plane position="-0.18 0 0" width="0.18" height="0.38" color="#009246"></a-plane>
+      <a-plane position="0 0 0" width="0.18" height="0.38" color="#ffffff"></a-plane>
+      <a-plane position="0.18 0 0" width="0.18" height="0.38" color="#ce2b37"></a-plane>
+    </a-entity>
+
+    <!-- VENTANAS pared izquierda -->
+    <a-box position="-7.68 3.0 2.0" rotation="0 90 0" width="2.2" height="2.0" depth="0.18" color="#795548"></a-box>
+    <a-plane position="-7.6 3.0 2.0" rotation="0 90 0" width="2.0" height="1.8" color="#b3e5fc" material="opacity: 0.7; transparent: true"></a-plane>
+    <a-box position="-7.68 3.0 -1.0" rotation="0 90 0" width="2.2" height="2.0" depth="0.18" color="#795548"></a-box>
+    <a-plane position="-7.6 3.0 -1.0" rotation="0 90 0" width="2.0" height="1.8" color="#b3e5fc" material="opacity: 0.7; transparent: true"></a-plane>
+
+    <!-- POSTER EGRESADO pared derecha (Interactivo) -->
+    <a-entity class="interactivo" position="7.65 2.5 3.0" data-info="Perfil del egresado: dominio de 2 o mas idiomas extranjeros, certificacion TOEFL/DELF/Goethe, practica pedagogica y traduccion literaria" data-sound="metal">
+      <a-box position="0 0 0" width="0.1" height="1.8" depth="1.3" color="#fff9c4"></a-box>
+      <a-plane position="0.06 0 0" rotation="0 90 0" width="1.1" height="1.6" color="#e8f5e9"></a-plane>
+      <a-text value="Egresado en Idiomas" position="0.07 0.5 0" rotation="0 90 0" align="center" scale="0.22 0.22 0.22" color="#1b5e20"></a-text>
+      <a-text value="2 idiomas extranjeros Certificacion Internacional Practica docente Traduccion literaria" position="0.07 0.0 0" rotation="0 90 0" align="center" scale="0.16 0.16 0.16" color="#2e7d32" wrap-count="20"></a-text>
+    </a-entity>
+
+    <!-- PROYECTOR EN TECHO -->
+    <a-box position="0 5.55 -5.5" width="0.4" height="0.2" depth="0.6" color="#424242"></a-box>
+    <a-cylinder position="0 5.44 -5.5" radius="0.04" height="0.1" color="#212121"></a-cylinder>
+    <a-cone position="0 4.8 -6.8" radius-top="0.04" radius-bottom="0.85" height="1.2" color="#fffff0" material="opacity: 0.08; transparent: true" rotation="180 0 0"></a-cone>
+
+  </a-scene>
+
+  <script src="app.js"></script>
+</body>
+</html>

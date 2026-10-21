@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gastronomía: Cocina Profesional de Alta Cocina | Vision Mind</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+
+  <!-- Panel HUD Interactivo de Gastronomía -->
+  <div class="panel">
+    <div class="panel-header-badge">
+      <span>🍽️</span> ALTA COCINA &amp; ARTE CULINARIO
+    </div>
+    <h2>🍳 Gastronomía: Taller Culinario</h2>
+    
+    <p>
+      Bienvenido a la cocina profesional de alta gama. Con el mouse orienta tu ángulo visual y con <strong>WASD</strong> o las <strong>flechas</strong> recorre las partidas de cocina.
+    </p>
+    <p>
+      Apunta con el cursor a los ingredientes, cuchillo de chef, fogones y estación de emplatado para ejecutar la receta.
+    </p>
+    
+    <div class="panel-stat">
+      <span>Técnicas culinarias ejecutadas:</span>
+      <span id="contador">0</span>
+    </div>
+    
+    <div id="feedback" class="hud-feedback">
+      Apunta a la mesa de preparación o a los fogones para cocinar...
+    </div>
+
+    <div class="panel-controls-hint">
+      <span>🎯 Cursor activo</span> &bull; <span>🔥 Partida caliente &amp; mise en place</span>
+    </div>
+  </div>
+
+  <a-scene>
+    <!-- CÁMARA CON CURSOR INTERACTIVO -->
+    <a-entity position="0 1.6 3.2">
+      <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 22">
+        <a-cursor
+          id="cursor"
+          color="#00f5d4"
+          fuse="true"
+          fuse-timeout="700"
+          raycaster="objects: .interactivo, .producto"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 700; from: 1 1 1; to: 0.2 0.2 0.2"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeOutCubic; dur: 200; to: 1 1 1">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- ILUMINACIÓN AMBIENTAL CÁLIDA DE COCINA -->
+    <a-light type="ambient" color="#fff8e1" intensity="0.95"></a-light>
+    
+    <!-- LUZ DIRIGIDA DE CAMPANA EXTRACTORA SOBRE LA ISLA -->
+    <a-light 
+      type="spot" 
+      position="0 4.5 -1.2" 
+      target="#isla-foco" 
+      angle="45" 
+      penumbra="0.3" 
+      color="#ffe082" 
+      intensity="2.4">
+    </a-light>
+    <a-entity id="isla-foco" position="0 0.9 -1.2"></a-entity>
+
+    <!-- ==========================================
+         PISO INDUSTRIAL Y ESTRUCTURA DE LA COCINA
+         ========================================== -->
+    <!-- Piso cerámico antideslizante gris carbón -->
+    <a-plane 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#37474f" 
+      material="roughness: 0.5; metalness: 0.1">
+    </a-plane>
+
+    <!-- Pared Frontal (Azulejos blancos de cocina y acero) -->
+    <a-box position="0 4 -8" width="26" height="8" depth="0.4" color="#f5f5f5"></a-box>
+    <a-box position="0 1.6 -7.9" width="26" height="3.2" depth="0.45" color="#cfd8dc" material="metalness: 0.8; roughness: 0.3"></a-box>
+
+    <!-- Pase de cocina / Ventana de servicio al restaurante -->
+    <a-box position="0 3.2 -7.8" width="7" height="2" depth="0.2" color="#263238"></a-box>
+    <a-plane position="0 3.2 -7.68" width="6.6" height="1.8" color="#ffe082" material="opacity: 0.4"></a-plane>
+    <a-text value="PASE DE SERVICIO - CHEF EXECUTIVE" position="0 4.4 -7.7" align="center" scale="0.9 0.9 0.9" color="#ffd54f"></a-text>
+    <!-- Campana de servicio de latón dorado en el pase -->
+    <a-entity 
+      class="interactivo" 
+      position="2.2 2.3 -7.6" 
+      data-info="Timbre de pase tocado: ¡Orden lista para mesero!" 
+      data-sound="metal">
+      <a-cylinder radius="0.08" height="0.02" color="#5d4037"></a-cylinder>
+      <a-sphere position="0 0.05 0" radius="0.07" color="#ffd700" material="metalness: 0.9"></a-sphere>
+    </a-entity>
+
+    <!-- Pared Izquierda (Neveras industriales y estantes) -->
+    <a-box position="-11 4 0" rotation="0 90 0" width="20" height="8" depth="0.4" color="#eceff1"></a-box>
+
+    <!-- Pared Derecha (Despensa y vinos de reducción) -->
+    <a-box position="11 4 0" rotation="0 -90 0" width="20" height="8" depth="0.4" color="#eceff1"></a-box>
+
+    <!-- ==========================================
+         ISLA CENTRAL DEL CHEF (ACERO INOXIDABLE)
+         ========================================== -->
+    <!-- Mesa mesón en acero inoxidable pulido -->
+    <a-box position="0 0.45 -1.2" width="3.2" height="0.88" depth="1.6" color="#90a4ae" material="metalness: 0.85; roughness: 0.2"></a-box>
+    <!-- Encimera superior brillante de acero -->
+    <a-box position="0 0.92 -1.2" width="3.3" height="0.08" depth="1.7" color="#cfd8dc" material="metalness: 0.95; roughness: 0.15"></a-box>
+
+    <!-- TABLA DE CORTE PROFESIONAL DE ROBLE MACIZO -->
+    <a-box position="-0.5 0.98 -1.1" width="1.1" height="0.06" depth="0.8" color="#8d6e63" material="roughness: 0.7"></a-box>
+
+    <!-- INGREDIENTE 1: Medallón de Lomo Marinado (Interactivo) -->
+    <a-cylinder 
+      class="interactivo" 
+      position="-0.65 1.04 -1.05" 
+      radius="0.16" height="0.07" 
+      color="#880e4f" 
+      data-info="Medallón de lomo madurado: Atemperado con sal marina y romero silvestre" 
+      data-sound="action">
+      <a-cylinder position="0.02 0.04 0" rotation="0 40 0" radius="0.01" height="0.18" color="#2e7d32"></a-cylinder>
+    </a-cylinder>
+
+    <!-- UTENSILIO 1: Cuchillo de Chef Cebollero de Acero Damasco (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="-0.15 1.03 -1.0" 
+      rotation="0 25 0" 
+      data-info="Cuchillo cebollero tomado: Hoja de acero damasco de alta precisión para corte Brunoise" 
+      data-sound="metal">
+      <!-- Mango negro ergonómico -->
+      <a-box width="0.035" height="0.025" depth="0.14" color="#212121"></a-box>
+      <!-- Hoja plateada ancha afilada -->
+      <a-box position="0 0.01 -0.16" width="0.008" height="0.065" depth="0.22" color="#eceff1" material="metalness: 0.95; roughness: 0.1"></a-box>
+    </a-entity>
+
+    <!-- INGREDIENTES 2: Tomates Cherry Frescos y Ajos (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="-0.85 1.02 -1.4" 
+      data-info="Tomates cherry de huerto ecológico y dientes de ajo confitados seleccionados" 
+      data-sound="action">
+      <!-- Ramekin blanco -->
+      <a-cylinder radius="0.18" height="0.07" color="#ffffff"></a-cylinder>
+      <a-sphere position="-0.06 0.06 0" radius="0.05" color="#d32f2f"></a-sphere>
+      <a-sphere position="0.05 0.06 0.04" radius="0.055" color="#c62828"></a-sphere>
+      <a-sphere position="0 0.06 -0.06" radius="0.048" color="#e53935"></a-sphere>
+    </a-entity>
+
+    <!-- INGREDIENTE 3: Aceite de Oliva Virgen Extra en Aceitera (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="0.3 1.15 -1.5" 
+      data-info="Aceite de oliva virgen extra arbequina: Primer prensado en frío rociado" 
+      data-sound="action">
+      <!-- Botella de vidrio verde oliva -->
+      <a-cylinder radius="0.07" height="0.34" color="#33691e" material="opacity: 0.85"></a-cylinder>
+      <!-- Pico vertedor metálico -->
+      <a-cylinder position="0 0.22 0" radius="0.015" height="0.1" color="#cfd8dc" material="metalness: 0.9"></a-cylinder>
+    </a-entity>
+
+    <!-- UTENSILIO 2: Pinzas de Emplatado de Precisión y Plato Gourmet (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="0.75 0.98 -1.0" 
+      data-info="Plato de alta cocina: Emplatado con reducción al oporto, brotes tiernos y esferificaciones" 
+      data-sound="metal">
+      <!-- Plato de cerámica negra mate de diseño -->
+      <a-cylinder radius="0.34" height="0.03" color="#212121"></a-cylinder>
+      <!-- Salsa decorativa en espiral -->
+      <a-ring position="0 0.02 0" rotation="-90 0 0" radius-inner="0.15" radius-outer="0.19" color="#4a148c"></a-ring>
+      <!-- Porción gourmet en el centro -->
+      <a-cylinder position="0 0.04 0" radius="0.08" height="0.04" color="#5d4037"></a-cylinder>
+      <!-- Brotes verdes decorativos -->
+      <a-sphere position="0.02 0.07 0" radius="0.025" color="#4caf50"></a-sphere>
+    </a-entity>
+
+    <!-- ==========================================
+         BATERÍA DE FOGONES Y CAMPANA INDUSTRIAL
+         ========================================== -->
+    <a-entity position="0 0 -5.5">
+      <!-- Bloque de cocina industrial de 4 quemadores -->
+      <a-box position="0 0.5 0" width="4.5" height="1.0" depth="1.4" color="#263238" material="metalness: 0.8"></a-box>
+      <a-box position="0 1.02 0" width="4.6" height="0.06" depth="1.45" color="#37474f"></a-box>
+
+      <!-- FOGÓN 1: Sartén de Cobre Salteando con llama azul (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="-1.2 1.08 0.1" 
+        data-info="Sartén salteadora de cobre: Salteado rápido a fuego vivo (Sauté) listo" 
+        data-sound="action">
+        <!-- Aro de fuego azul debajo -->
+        <a-ring rotation="-90 0 0" radius-inner="0.18" radius-outer="0.22" color="#00e5ff" material="emissive: #00e5ff; emissiveIntensity: 0.9"></a-ring>
+        <!-- Sartén de cobre -->
+        <a-cylinder position="0 0.06 0" radius="0.26" height="0.09" color="#b87333" material="metalness: 0.85; roughness: 0.25"></a-cylinder>
+        <!-- Mango largo de hierro fundido -->
+        <a-cylinder position="0 0.08 0.38" rotation="80 0 0" radius="0.02" height="0.38" color="#212121"></a-cylinder>
+        <!-- Contenido salteado en el interior -->
+        <a-cylinder position="0 0.08 0" radius="0.24" height="0.02" color="#d84315"></a-cylinder>
+      </a-entity>
+
+      <!-- FOGÓN 2: Olla Alta de Acero de Caldo y Fondos (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="1.2 1.08 0.1" 
+        data-info="Marmita de fondo oscuro: Caldo reducido a fuego lento durante 12 horas" 
+        data-sound="metal">
+        <a-cylinder position="0 0.24 0" radius="0.28" height="0.45" color="#cfd8dc" material="metalness: 0.95"></a-cylinder>
+        <!-- Asas de la olla -->
+        <a-torus position="-0.3 0.35 0" radius="0.06" radius-tubular="0.015" color="#78909c"></a-torus>
+        <a-torus position="0.3 0.35 0" radius="0.06" radius-tubular="0.015" color="#78909c"></a-torus>
+      </a-entity>
+
+      <!-- HORNO CONVECTOR CON PUERTA DE CRISTAL ILUMINADA -->
+      <a-entity 
+        class="interactivo" 
+        position="0 0.5 0.72" 
+        data-info="Horno convector industrial: Asado a 180°C con convección de vapor controlada" 
+        data-sound="action">
+        <a-box width="1.4" height="0.8" depth="0.06" color="#212121"></a-box>
+        <!-- Cristal del horno iluminado por luz interior -->
+        <a-plane position="0 0 0.035" width="1.15" height="0.6" color="#ffb74d" material="emissive: #ff9800; emissiveIntensity: 0.7; opacity: 0.85"></a-plane>
+        <a-text value="180 C" position="0.3 0.32 0.04" scale="0.28 0.28 0.28" color="#00e676"></a-text>
+      </a-entity>
+
+      <!-- GRAN CAMPANA EXTRACTORA DE ACERO SUSPENDIDA -->
+      <a-box position="0 4.2 0" width="4.8" height="1.2" depth="1.8" color="#cfd8dc" material="metalness: 0.8; roughness: 0.2"></a-box>
+      <!-- Filtros de lamas en ángulo -->
+      <a-box position="0 3.55 0" width="4.4" height="0.1" depth="1.5" color="#455a64" material="metalness: 0.9"></a-box>
+    </a-entity>
+
+    <!-- ==========================================
+         ESTANTERÍA DE ESPECIAS & BODEGA DE VINOS
+         ========================================== -->
+    <a-entity position="9 0 -2" rotation="0 -90 0">
+      <!-- Mueble estantería de madera oscura y metal -->
+      <a-box position="0 1.8 0" width="4" height="3.6" depth="0.6" color="#3e2723"></a-box>
+      <a-box position="0 1.2 0.3" width="3.8" height="0.05" depth="0.5" color="#5d4037"></a-box>
+      <a-box position="0 2.2 0.3" width="3.8" height="0.05" depth="0.5" color="#5d4037"></a-box>
+      
+      <!-- Frascos de especias aromáticas (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="-1 2.45 0.35" 
+        data-info="Molinillo de pimienta negra de Tellicherry y azafrán en hebras molido" 
+        data-sound="action">
+        <a-cylinder radius="0.06" height="0.28" color="#212121"></a-cylinder>
+        <a-cylinder position="0.3 0 0" radius="0.05" height="0.22" color="#e65100"></a-cylinder>
+        <a-cylinder position="0.6 0 0" radius="0.05" height="0.22" color="#2e7d32"></a-cylinder>
+      </a-entity>
+
+      <!-- Botellas de vino para reducciones y fondos -->
+      <a-cylinder position="0.8 1.45 0.35" radius="0.065" height="0.35" color="#1a237e"></a-cylinder>
+      <a-cylinder position="1.1 1.45 0.35" radius="0.065" height="0.35" color="#311b92"></a-cylinder>
+      <a-cylinder position="1.4 1.45 0.35" radius="0.065" height="0.35" color="#b71c1c"></a-cylinder>
+    </a-entity>
+
+  </a-scene>
+
+  <!-- Script interactivo del simulador -->
+  <script src="app.js"></script>
+</body>
+</html>

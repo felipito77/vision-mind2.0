@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingeniería Aeroespacial: Hangar & Misiones Espaciales | Vision Mind</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+
+  <!-- Panel HUD Interactivo de Aeroespacial -->
+  <div class="panel">
+    <div class="panel-header-badge">
+      <span>🚀</span> PROPULSIÓN, SATÉLITES &amp; EXPLORACIÓN ORBITAL
+    </div>
+    <h2>🛰️ Ing. Aeroespacial: Hangar Espacial</h2>
+    
+    <p>
+      Bienvenido al hangar de integración y pruebas aeroespaciales. Con el mouse orienta tu ángulo visual y con <strong>WASD</strong> o las <strong>flechas</strong> recorre el banco de pruebas.
+    </p>
+    <p>
+      Apunta con el cursor al motor cohete, al satélite en ensamblaje, a los paneles solares y a la consola de telemetría orbital.
+    </p>
+    
+    <div class="panel-stat">
+      <span>Subsistemas aeroespaciales validados:</span>
+      <span id="contador">0</span>
+    </div>
+    
+    <div id="feedback" class="hud-feedback">
+      Apunta al motor cohete o a los paneles solares del satélite...
+    </div>
+
+    <div class="panel-controls-hint">
+      <span>🎯 Cursor activo</span> &bull; <span>🌌 Ventana orbital LEO activa</span>
+    </div>
+  </div>
+
+  <a-scene>
+    <!-- CÁMARA CON CURSOR INTERACTIVO -->
+    <a-entity position="0 1.6 3.8">
+      <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 22">
+        <a-cursor
+          id="cursor"
+          color="#00f5d4"
+          fuse="true"
+          fuse-timeout="700"
+          raycaster="objects: .interactivo, .producto"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 700; from: 1 1 1; to: 0.2 0.2 0.2"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeOutCubic; dur: 200; to: 1 1 1">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- ILUMINACIÓN CÓSMICA / HANGAR -->
+    <a-light type="ambient" color="#102040" intensity="0.85"></a-light>
+    
+    <!-- LUZ DIRIGIDA SOBRE EL BANCO DE PROPULSIÓN -->
+    <a-light 
+      type="spot" 
+      position="0 6 -1.5" 
+      target="#hangar-foco" 
+      angle="50" 
+      penumbra="0.3" 
+      color="#00f5d4" 
+      intensity="2.4">
+    </a-light>
+    <a-entity id="hangar-foco" position="0 1 -1.5"></a-entity>
+
+    <!-- LUZ DE PLASMA AZULADA -->
+    <a-light type="point" position="-2 3 0" color="#38bdf8" intensity="1.2"></a-light>
+    <a-light type="point" position="2 3 0" color="#ff7043" intensity="0.9"></a-light>
+
+    <!-- ==========================================
+         PISO DE HANGAR CON MARCAS DE LANZAMIENTO
+         ========================================== -->
+    <!-- Piso industrial metálico oscuro -->
+    <a-plane 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#10192e" 
+      material="roughness: 0.3; metalness: 0.5">
+    </a-plane>
+
+    <!-- Anillo helipad / launch pad de seguridad -->
+    <a-ring 
+      position="0 0.02 -1.5" 
+      rotation="-90 0 0" 
+      radius-inner="3.0" 
+      radius-outer="3.2" 
+      color="#ffd600" 
+      material="opacity: 0.9">
+    </a-ring>
+
+    <!-- Líneas de peligro rayadas amarillas y negras -->
+    <a-plane position="-3.4 0.02 -1.5" rotation="-90 0 0" width="0.3" height="6.4" color="#ffd600"></a-plane>
+    <a-plane position="3.4 0.02 -1.5" rotation="-90 0 0" width="0.3" height="6.4" color="#ffd600"></a-plane>
+
+    <!-- Pared Frontal con Gran Cúpula / Ventanal Espacial -->
+    <a-box position="0 4 -9" width="26" height="8" depth="0.4" color="#050a14"></a-box>
+    
+    <!-- Ventanal Panorámico hacia el Espacio y la Tierra -->
+    <a-plane position="0 4 -8.78" width="18" height="5.5" color="#020813"></a-plane>
+    
+    <!-- El Planeta Tierra visto desde órbita (Animado) -->
+    <a-sphere 
+      position="5 4.5 -8.2" 
+      radius="1.8" 
+      color="#1976d2" 
+      material="roughness: 0.8" 
+      animation="property: rotation; to: 0 360 0; loop: true; dur: 45000; easing: linear">
+      <!-- Manchas continentales blancas/verdes -->
+      <a-sphere position="0.3 0.4 1.5" radius="0.4" color="#81c784"></a-sphere>
+      <a-sphere position="-0.5 -0.2 1.4" radius="0.5" color="#ffffff" material="opacity: 0.7"></a-sphere>
+    </a-sphere>
+
+    <!-- Letrero de la Misión Aeroespacial -->
+    <a-box position="0 7.2 -8.6" width="9" height="0.8" depth="0.15" color="#0a192f"></a-box>
+    <a-text 
+      value="VISION MIND SPACE SYSTEMS & PROPULSION TEST FACILITY" 
+      position="0 7.2 -8.5" 
+      align="center" 
+      scale="0.85 0.85 0.85" 
+      color="#38bdf8">
+    </a-text>
+
+    <!-- Paredes Laterales del Hangar -->
+    <a-box position="-12 4 0" rotation="0 90 0" width="22" height="8" depth="0.4" color="#091326"></a-box>
+    <a-box position="12 4 0" rotation="0 -90 0" width="22" height="8" depth="0.4" color="#091326"></a-box>
+
+    <!-- ==========================================
+         MOTOR COHETE DE PROPULSIÓN CRIOGÉNICA
+         ========================================== -->
+    <a-entity position="-2.2 0 -1.5">
+      <!-- Estructura de montaje y bancada de empuje -->
+      <a-box position="0 0.4 0" width="1.6" height="0.8" depth="1.6" color="#263238"></a-box>
+      
+      <!-- MOTOR COHETE (Tobera de Laval) (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0 1.5 0" 
+        data-info="Tobera de motor cohete de empuje criogénico: Impulso específico Isp 450s en vacío con LOX/LH2" 
+        data-sound="metal">
+        
+        <!-- Cámara de combustión superior -->
+        <a-cylinder position="0 0.8 0" radius="0.35" height="0.6" color="#37474f" material="metalness: 0.9; roughness: 0.2"></a-cylinder>
+        <!-- Inyector y turbobomba -->
+        <a-box position="0 1.2 0" width="0.5" height="0.3" depth="0.5" color="#ff7043"></a-box>
+        
+        <!-- Cuello y Tobera de escape de campana cónica -->
+        <a-cone position="0 0.1 0" radius-top="0.2" radius-bottom="0.65" height="1.0" color="#455a64" material="metalness: 0.85; roughness: 0.3"></a-cone>
+        
+        <!-- Foco de plasma en el interior de la tobera -->
+        <a-cylinder position="0 -0.35 0" radius="0.5" height="0.1" color="#00e5ff" material="emissive: #00e5ff; emissiveIntensity: 1" animation="property: material.emissiveIntensity; to: 0.3; dir: alternate; dur: 800; loop: true"></a-cylinder>
+      </a-entity>
+
+      <!-- Tuberías de combustible criogénico -->
+      <a-cylinder position="0.5 1.4 0" radius="0.04" height="1.2" color="#00e5ff" material="metalness: 0.8"></a-cylinder>
+      <a-cylinder position="-0.5 1.4 0" radius="0.04" height="1.2" color="#ff7043" material="metalness: 0.8"></a-cylinder>
+    </a-entity>
+
+    <!-- ==========================================
+         SATÉLITE DE ESPACIO PROFUNDO EN ENSAMBLAJE
+         ========================================== -->
+    <a-entity position="2.2 0 -1.5">
+      <!-- Pedestal de integración satelital -->
+      <a-cylinder position="0 0.45 0" radius="0.75" height="0.9" color="#37474f" material="metalness: 0.7"></a-cylinder>
+
+      <!-- SATÉLITE CON PANELES SOLARES Y ANTENA (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0 1.5 0" 
+        data-info="Sonda satelital orbital: Aislamiento multicapa Mylar dorado, enlace óptico y paneles fotovoltaicos" 
+        data-sound="success"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 28000; easing: linear">
+        
+        <!-- Chasis cúbico dorado térmico (Gold Foil Mylar) -->
+        <a-box width="0.8" height="0.9" depth="0.8" color="#ffd700" material="metalness: 0.95; roughness: 0.15"></a-box>
+        
+        <!-- Antena Parabólica de Alta Ganancia -->
+        <a-cone position="0 0.65 0" rotation="180 0 0" radius-bottom="0.45" height="0.25" color="#eceff1" material="metalness: 0.8"></a-cone>
+        <a-cylinder position="0 0.9 0" radius="0.015" height="0.4" color="#cfd8dc"></a-cylinder>
+
+        <!-- Ala Solar Fotovoltaica Izquierda -->
+        <a-box position="-1.2 0 0" width="1.4" height="0.6" depth="0.04" color="#0d47a1" material="metalness: 0.7; roughness: 0.2">
+          <!-- Células fotovoltaicas de silicio azul reflectante -->
+          <a-plane position="0 0 0.025" width="1.3" height="0.52" color="#1565c0" material="emissive: #1565c0; emissiveIntensity: 0.3"></a-plane>
+        </a-box>
+
+        <!-- Ala Solar Fotovoltaica Derecha -->
+        <a-box position="1.2 0 0" width="1.4" height="0.6" depth="0.04" color="#0d47a1" material="metalness: 0.7; roughness: 0.2">
+          <a-plane position="0 0 0.025" width="1.3" height="0.52" color="#1565c0" material="emissive: #1565c0; emissiveIntensity: 0.3"></a-plane>
+        </a-box>
+      </a-entity>
+    </a-entity>
+
+    <!-- ==========================================
+         CONSOLA DE CONTROL DE MISIÓN & TELEMETRÍA
+         ========================================== -->
+    <a-entity position="0 0 0" rotation="0 180 0">
+      <!-- Banco de operadores tras la cámara -->
+    </a-entity>
+
+    <!-- Terminal de Telemetría Frontal (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="0 1.1 -3.8" 
+      data-info="Consola de telemetría de vuelo: Órbita circular LEO altitud 420 km, velocidad 7.66 km/s, T-Minus 00:04:12" 
+      data-sound="action">
+      <a-box width="2.4" height="0.8" depth="0.5" color="#102040"></a-box>
+      
+      <!-- Pantallas de telemetría -->
+      <a-box position="-0.6 0.65 0" width="0.9" height="0.55" depth="0.06" color="#212121"></a-box>
+      <a-plane position="-0.6 0.65 0.04" width="0.84" height="0.48" color="#031127"></a-plane>
+      <a-text value="TELEMETRIA DE PROPULSION\nEMPUJE: 850 kN\nPRESION CAMARA: 98 bar" position="-0.95 0.75 0.05" scale="0.22 0.22 0.22" color="#00f5d4"></a-text>
+
+      <a-box position="0.6 0.65 0" width="0.9" height="0.55" depth="0.06" color="#212121"></a-box>
+      <a-plane position="0.6 0.65 0.04" width="0.84" height="0.48" color="#031127"></a-plane>
+      <a-text value="TRAYECTORIA ORBITAL\nINCLINACION: 51.6 deg\nESTADO: LISTO PARA LANZAMIENTO" position="0.25 0.75 0.05" scale="0.2 0.2 0.2" color="#ffeb3b"></a-text>
+    </a-entity>
+
+    <!-- ROVER DE EXPLORACIÓN PLANETARIA (Pared Izquierda) -->
+    <a-entity 
+      class="interactivo" 
+      position="-8 0.6 -4" 
+      rotation="0 45 0" 
+      data-info="Rover de exploración planetaria: Suspensión rocker-bogie de 6 ruedas y espectrómetro de masa" 
+      data-sound="action">
+      <!-- Chasis del rover -->
+      <a-box width="1.2" height="0.3" depth="0.8" color="#cfd8dc" material="metalness: 0.8"></a-box>
+      <!-- Mástil con cámara panorámica estéreo -->
+      <a-cylinder position="0.3 0.45 0.2" radius="0.03" height="0.6" color="#90a4ae"></a-cylinder>
+      <a-box position="0.3 0.78 0.2" width="0.25" height="0.12" depth="0.1" color="#212121"></a-box>
+      <a-sphere position="0.25 0.78 0.26" radius="0.03" color="#00e5ff"></a-sphere>
+      <a-sphere position="0.35 0.78 0.26" radius="0.03" color="#00e5ff"></a-sphere>
+      <!-- Ruedas -->
+      <a-cylinder position="-0.5 -0.2 0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="0 -0.2 0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="0.5 -0.2 0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="-0.5 -0.2 -0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="0 -0.2 -0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="0.5 -0.2 -0.5" rotation="0 0 90" radius="0.16" height="0.1" color="#37474f"></a-cylinder>
+    </a-entity>
+
+  </a-scene>
+
+  <!-- Script interactivo del simulador -->
+  <script src="app.js"></script>
+</body>
+</html>

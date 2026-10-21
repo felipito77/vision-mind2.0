@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicina: Sala de Cirugía y Quirófano | Vision Mind</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+
+  <!-- Panel HUD Interactivo de Cirugía -->
+  <div class="panel">
+    <div class="panel-header-badge">
+      <span>🏥</span> CIRUGÍA &amp; MEDICINA CLÍNICA
+    </div>
+    <h2>🩺 Medicina: Quirófano Central</h2>
+    
+    <p>
+      Bienvenido al quirófano de alta complejidad. Con el mouse gira tu ángulo visual y con <strong>WASD</strong> o las <strong>flechas</strong> desplázate por la sala.
+    </p>
+    <p>
+      Apunta con el retículo central al paciente, instrumental quirúrgico y monitores para interactuar.
+    </p>
+    
+    <div class="panel-stat">
+      <span>Procedimientos examinados:</span>
+      <span id="contador">0</span>
+    </div>
+    
+    <div id="feedback" class="hud-feedback">
+      Apunta al monitor de signos o al instrumental para comenzar...
+    </div>
+
+    <div class="panel-controls-hint">
+      <span>🎯 Cursor activo</span> &bull; <span>⚡ Sonido clínico en tiempo real</span>
+    </div>
+  </div>
+
+  <a-scene>
+    <!-- CÁMARA CON CURSOR INTERACTIVO -->
+    <a-entity position="0 1.6 3.5">
+      <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 22">
+        <a-cursor
+          id="cursor"
+          color="#00f5d4"
+          fuse="true"
+          fuse-timeout="700"
+          raycaster="objects: .interactivo, .producto"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 700; from: 1 1 1; to: 0.2 0.2 0.2"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeOutCubic; dur: 200; to: 1 1 1">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- ILUMINACIÓN AMBIENTAL Y QUIRÚRGICA -->
+    <a-light type="ambient" color="#e0f7fa" intensity="0.9"></a-light>
+    
+    <!-- LUZ DIRIGIDA CENITAL QUIRÓFANO -->
+    <a-light 
+      type="spot" 
+      position="0 5 -1.2" 
+      target="#paciente-foco" 
+      angle="35" 
+      penumbra="0.25" 
+      color="#ffffff" 
+      intensity="2.8">
+    </a-light>
+    <a-entity id="paciente-foco" position="0 1 -1.2"></a-entity>
+
+    <!-- LUZ DE APOYO SUAVE FRONTAL -->
+    <a-light type="point" position="0 3 2" color="#b2ebf2" intensity="0.6"></a-light>
+
+    <!-- ==========================================
+         PISO EPÓXICO Y ESTRUCTURA DE LA SALA
+         ========================================== -->
+    <!-- Piso antiséptico principal -->
+    <a-plane 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#cfd8dc" 
+      material="roughness: 0.2; metalness: 0.1">
+    </a-plane>
+
+    <!-- Delimitación de Área Estéril en el piso -->
+    <a-ring 
+      position="0 0.02 -1.2" 
+      rotation="-90 0 0" 
+      radius-inner="3.2" 
+      radius-outer="3.35" 
+      color="#00f5d4" 
+      material="opacity: 0.85">
+    </a-ring>
+
+    <!-- Pared Frontal / Trasera Quirófano -->
+    <a-box position="0 4 -9" width="26" height="8" depth="0.4" color="#eceff1"></a-box>
+    <a-box position="0 1.5 -8.9" width="26" height="3" depth="0.45" color="#b2dfdb"></a-box>
+    <a-box position="0 3 -8.8" width="26" height="0.1" depth="0.48" color="#78909c"></a-box>
+
+    <!-- Puerta Hermética Quirófano con ojos de buey -->
+    <a-box position="0 2.8 -8.7" width="4.4" height="4.8" depth="0.1" color="#607d8b"></a-box>
+    <a-box position="0 2.8 -8.65" width="4.2" height="4.6" depth="0.1" color="#78909c"></a-box>
+    <!-- Marco de puerta y línea divisoria -->
+    <a-box position="0 2.8 -8.6" width="0.05" height="4.6" depth="0.12" color="#37474f"></a-box>
+    <!-- Ventanillas circulares tipo ojo de buey -->
+    <a-cylinder position="-1 3.4 -8.55" rotation="90 0 0" radius="0.45" height="0.1" color="#cfd8dc"></a-cylinder>
+    <a-cylinder position="-1 3.4 -8.54" rotation="90 0 0" radius="0.38" height="0.12" color="#00bcd4" material="opacity: 0.7"></a-cylinder>
+    <a-cylinder position="1 3.4 -8.55" rotation="90 0 0" radius="0.45" height="0.1" color="#cfd8dc"></a-cylinder>
+    <a-cylinder position="1 3.4 -8.54" rotation="90 0 0" radius="0.38" height="0.12" color="#00bcd4" material="opacity: 0.7"></a-cylinder>
+    <!-- Manillas de apertura hermética de acero -->
+    <a-cylinder position="-0.25 2.6 -8.5" rotation="0 0 0" radius="0.03" height="0.9" color="#eceff1"></a-cylinder>
+    <a-cylinder position="0.25 2.6 -8.5" rotation="0 0 0" radius="0.03" height="0.9" color="#eceff1"></a-cylinder>
+
+    <!-- Letrero luminoso superior de Quirófano Activo -->
+    <a-box position="0 5.6 -8.6" width="4.8" height="0.75" depth="0.15" color="#1a1a1a"></a-box>
+    <a-box position="0 5.6 -8.5" width="4.6" height="0.6" depth="0.1" color="#b71c1c" material="emissive: #d32f2f; emissiveIntensity: 0.6"></a-box>
+    <a-text 
+      value="QUIROFANO 01 - CIRUGIA EN CURSO" 
+      position="0 5.6 -8.4" 
+      align="center" 
+      scale="1.2 1.2 1.2" 
+      color="#ffffff">
+    </a-text>
+
+    <!-- Pared Izquierda -->
+    <a-box position="-12 4 0" rotation="0 90 0" width="22" height="8" depth="0.4" color="#eceff1"></a-box>
+    <a-box position="-11.9 1.5 0" rotation="0 90 0" width="22" height="3" depth="0.45" color="#b2dfdb"></a-box>
+
+    <!-- Pared Derecha -->
+    <a-box position="12 4 0" rotation="0 -90 0" width="22" height="8" depth="0.4" color="#eceff1"></a-box>
+    <a-box position="11.9 1.5 0" rotation="0 -90 0" width="22" height="3" depth="0.45" color="#b2dfdb"></a-box>
+
+    <!-- ==========================================
+         MESA QUIRÚRGICA CENTRAL & PACIENTE
+         ========================================== -->
+    <!-- Columna base telescópica y base rodante de acero -->
+    <a-box position="0 0.15 -1.2" width="1.4" height="0.3" depth="2.2" color="#546e7a" material="metalness: 0.8; roughness: 0.2"></a-box>
+    <a-cylinder position="0 0.65 -1.2" radius="0.3" height="0.8" color="#cfd8dc" material="metalness: 0.9; roughness: 0.15"></a-cylinder>
+
+    <!-- Colchón acolchado y camilla quirúrgica -->
+    <a-box position="0 1.05 -1.2" width="1.15" height="0.16" depth="2.7" color="#263238"></a-box>
+    <a-box position="0 1.15 -1.2" width="1.1" height="0.1" depth="2.6" color="#37474f"></a-box>
+
+    <!-- Apoyabrazos quirúrgicos laterales -->
+    <a-box position="-0.75 1.1 -1.4" width="0.3" height="0.08" depth="0.9" color="#455a64"></a-box>
+    <a-box position="0.75 1.1 -1.4" width="0.3" height="0.08" depth="0.9" color="#455a64"></a-box>
+
+    <!-- EL PACIENTE (Anatomía, Gorro, Sábana Estéril y Mascarilla) -->
+    <!-- Almohada ergonómica médica -->
+    <a-box position="0 1.25 -2.25" width="0.65" height="0.12" depth="0.4" color="#ffffff"></a-box>
+
+    <!-- Cabeza del Paciente (Entidad interactiva para inspección) -->
+    <a-entity 
+      class="interactivo" 
+      position="0 1.4 -2.2" 
+      data-info="Paciente masculino 34 años en anestesia general equilibrada"
+      data-sound="ecg">
+      
+      <!-- Cabeza piel -->
+      <a-sphere radius="0.22" color="#f5cba7"></a-sphere>
+      <!-- Gorro quirúrgico azul -->
+      <a-sphere position="0 0.08 0.03" radius="0.23" color="#1976d2"></a-sphere>
+      <!-- Mascarilla de oxígeno transparente/celeste -->
+      <a-sphere position="0 -0.05 0.16" radius="0.12" color="#b2ebf2" material="opacity: 0.8"></a-sphere>
+      <!-- Tubo corrugado que sale de la mascarilla hacia la máquina de anestesia -->
+      <a-cylinder position="-0.3 0.05 0.2" rotation="30 45 -20" radius="0.03" height="0.5" color="#e0e0e0"></a-cylinder>
+    </a-entity>
+
+    <!-- Cuerpo del Paciente cubierto por Sábana Quirúrgica Estéril (Campo Quirúrgico) -->
+    <a-entity 
+      class="interactivo" 
+      position="0 1.28 -1.1" 
+      data-info="Campo operatorio estéril preparado para incisión" 
+      data-sound="action">
+      
+      <!-- Relieve del torso y piernas del paciente bajo la tela -->
+      <a-box position="0 0.05 -0.3" width="0.95" height="0.2" depth="0.9" color="#00897b"></a-box>
+      <a-box position="0 0.02 0.65" width="0.85" height="0.16" depth="1.0" color="#00897b"></a-box>
+
+      <!-- Ventana Quirúrgica (Abertura estéril sobre el abdomen) -->
+      <a-plane position="0 0.16 -0.3" rotation="-90 0 0" width="0.35" height="0.4" color="#ffffff"></a-plane>
+      <a-plane position="0 0.165 -0.3" rotation="-90 0 0" width="0.28" height="0.32" color="#ffe0b2"></a-plane>
+      <a-plane position="0 0.17 -0.3" rotation="-90 0 0" width="0.04" height="0.2" color="#d32f2f"></a-plane>
+    </a-entity>
+
+    <!-- Brazo izquierdo extendido con catéter IV y oxímetro -->
+    <a-cylinder position="-0.75 1.15 -1.4" rotation="0 0 90" radius="0.065" height="0.8" color="#f5cba7"></a-cylinder>
+    <!-- Sensor de Pulsioximetría en el dedo con luz roja parpadeante -->
+    <a-box 
+      class="interactivo" 
+      position="-1.1 1.16 -1.4" 
+      width="0.08" height="0.06" depth="0.06" 
+      color="#d32f2f" 
+      data-info="Sensor SpO2 en dedo: Saturación de oxígeno al 99%" 
+      data-sound="ecg"
+      animation="property: material.color; to: #ff5252; dir: alternate; dur: 800; loop: true">
+    </a-box>
+
+    <!-- ==========================================
+         LÁMPARA CIALÍTICA QUIRÚRGICA DE TECHO
+         ========================================== -->
+    <a-entity position="0 5.5 -1.2">
+      <!-- Fijación al techo -->
+      <a-cylinder radius="0.3" height="0.15" color="#cfd8dc" material="metalness: 0.8"></a-cylinder>
+      <!-- Brazo vertical -->
+      <a-cylinder position="0 -0.6 0" radius="0.06" height="1.1" color="#90a4ae" material="metalness: 0.9"></a-cylinder>
+      <!-- Articulación doble de suspensión -->
+      <a-sphere position="0 -1.2 0" radius="0.15" color="#607d8b"></a-sphere>
+      <a-cylinder position="0.35 -1.4 0.1" rotation="30 20 -40" radius="0.05" height="0.9" color="#b0bec5"></a-cylinder>
+      
+      <!-- Cúpula de la Lámpara Cialítica con múltiples focos LED -->
+      <a-entity 
+        class="interactivo" 
+        position="0.6 -1.8 0.2" 
+        rotation="-20 15 10" 
+        data-info="Lámpara cialítica LED con haz frío sin sombras calibrada al 100%" 
+        data-sound="action">
+        
+        <!-- Carcasa de la lámpara -->
+        <a-cylinder radius="0.85" height="0.12" color="#eceff1" material="metalness: 0.4"></a-cylinder>
+        <a-cylinder position="0 -0.06 0" radius="0.8" height="0.02" color="#ffffff" material="emissive: #ffffff; emissiveIntensity: 0.9"></a-cylinder>
+        <!-- Mango esterilizable central para cirujano -->
+        <a-cylinder position="0 -0.2 0" radius="0.04" height="0.3" color="#37474f"></a-cylinder>
+        
+        <!-- Focos satélite circulares individuales -->
+        <a-cylinder position="0.45 -0.06 0" radius="0.16" height="0.04" color="#e0f7fa" material="emissive: #00e5ff; emissiveIntensity: 0.8"></a-cylinder>
+        <a-cylinder position="-0.45 -0.06 0" radius="0.16" height="0.04" color="#e0f7fa" material="emissive: #00e5ff; emissiveIntensity: 0.8"></a-cylinder>
+        <a-cylinder position="0 -0.06 0.45" radius="0.16" height="0.04" color="#e0f7fa" material="emissive: #00e5ff; emissiveIntensity: 0.8"></a-cylinder>
+        <a-cylinder position="0 -0.06 -0.45" radius="0.16" height="0.04" color="#e0f7fa" material="emissive: #00e5ff; emissiveIntensity: 0.8"></a-cylinder>
+      </a-entity>
+    </a-entity>
+
+    <!-- ==========================================
+         MONITOR DE SIGNOS VITALES MULTIPARÁMETRO
+         ========================================== -->
+    <a-entity position="-2.4 0 -1.4" rotation="0 35 0">
+      <!-- Carro rodante metálico con soporte -->
+      <a-cylinder position="0 0.05 0" radius="0.4" height="0.1" color="#37474f"></a-cylinder>
+      <a-cylinder position="0 0.85 0" radius="0.05" height="1.6" color="#cfd8dc" material="metalness: 0.8"></a-cylinder>
+      <a-box position="0 0.95 0" width="0.75" height="0.1" depth="0.5" color="#546e7a"></a-box>
+      
+      <!-- Monitor Clínico (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0 1.65 0" 
+        rotation="-10 0 0" 
+        data-info="Monitor multiparámetro: FC 74 BPM | SpO2 99% | PA 120/78 | Paciente estable" 
+        data-sound="ecg">
+        
+        <!-- Marco de pantalla -->
+        <a-box width="1.2" height="0.8" depth="0.12" color="#212121"></a-box>
+        <!-- Pantalla activa con retroiluminación -->
+        <a-plane position="0 0 0.07" width="1.12" height="0.72" color="#0a192f"></a-plane>
+
+        <!-- Ondas y Datos Vitales Médicos -->
+        <!-- Línea ECG verde simulación -->
+        <a-box position="-0.1 0.22 0.08" width="0.85" height="0.015" depth="0.01" color="#00e676" material="emissive: #00e676"></a-box>
+        <a-text value="ECG II  HR: 74 BPM [NORMAL]" position="-0.52 0.28 0.08" scale="0.32 0.32 0.32" color="#00e676"></a-text>
+
+        <!-- Saturación SpO2 azul -->
+        <a-box position="-0.1 0.06 0.08" width="0.85" height="0.015" depth="0.01" color="#00e5ff" material="emissive: #00e5ff"></a-box>
+        <a-text value="SpO2: 99%  PLETH CONTINUO" position="-0.52 0.12 0.08" scale="0.32 0.32 0.32" color="#00e5ff"></a-text>
+
+        <!-- Presión Arterial no invasiva PNI -->
+        <a-text value="PA: 120/78 mmHg (PAM 92)" position="-0.52 -0.06 0.08" scale="0.34 0.34 0.34" color="#ffd600"></a-text>
+
+        <!-- Temperatura y Frecuencia respiratoria -->
+        <a-text value="TEMP: 36.6 C  |  FR: 14 rpm" position="-0.52 -0.2 0.08" scale="0.32 0.32 0.32" color="#ffffff"></a-text>
+        
+        <!-- LED de Estado Pulsante -->
+        <a-sphere position="0.48 0.3 0.08" radius="0.035" color="#00e676" material="emissive: #00e676; emissiveIntensity: 1" animation="property: material.emissiveIntensity; to: 0.2; dir: alternate; dur: 900; loop: true"></a-sphere>
+      </a-entity>
+    </a-entity>
+
+    <!-- ==========================================
+         MESA DE MAYO & INSTRUMENTAL QUIRÚRGICO
+         ========================================== -->
+    <a-entity position="1.6 0 -1.1" rotation="0 -25 0">
+      <!-- Soporte en T regulable en altura de acero inoxidable -->
+      <a-box position="0 0.05 0" width="0.65" height="0.1" depth="0.65" color="#37474f"></a-box>
+      <a-cylinder position="0 0.6 0" radius="0.035" height="1.1" color="#cfd8dc" material="metalness: 0.95"></a-cylinder>
+      
+      <!-- Bandeja estéril de acero inoxidable -->
+      <a-box position="0 1.15 0" width="1.1" height="0.04" depth="0.7" color="#eceff1" material="metalness: 0.85; roughness: 0.15"></a-box>
+      <!-- Paño estéril azul sobre la bandeja -->
+      <a-plane position="0 1.175 0" rotation="-90 0 0" width="0.95" height="0.58" color="#81d4fa"></a-plane>
+
+      <!-- INSTRUMENTO 1: Bisturí Quirúrgico de Precisión (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="-0.3 1.22 0.1" 
+        data-info="Bisturí quirúrgico #10 tomado: Instrumental afilado y estéril para incisión" 
+        data-sound="metal">
+        <!-- Mango metálico -->
+        <a-box width="0.03" height="0.02" depth="0.28" color="#cfd8dc" material="metalness: 0.95"></a-box>
+        <!-- Hoja de acero brillante -->
+        <a-cone position="0 0 -0.18" rotation="-90 0 0" radius-bottom="0.02" height="0.08" color="#ffffff" material="metalness: 1; roughness: 0.1"></a-cone>
+      </a-entity>
+
+      <!-- INSTRUMENTO 2: Pinzas Hemostáticas Kelly (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="-0.08 1.22 0.1" 
+        data-info="Pinza hemostática curva Kelly: Control de hemostasia y sujeción tisular" 
+        data-sound="metal">
+        <a-cylinder position="0 0 0" rotation="90 0 0" radius="0.012" height="0.25" color="#b0bec5" material="metalness: 0.9"></a-cylinder>
+        <a-torus position="0.03 0 0.13" radius="0.03" radius-tubular="0.008" color="#90a4ae"></a-torus>
+        <a-torus position="-0.03 0 0.13" radius="0.03" radius-tubular="0.008" color="#90a4ae"></a-torus>
+      </a-entity>
+
+      <!-- INSTRUMENTO 3: Tijeras Quirúrgicas Metzenbaum (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0.12 1.22 0.1" 
+        data-info="Tijeras quirúrgicas Metzenbaum: Disección delicada de planos profundos" 
+        data-sound="metal">
+        <a-cylinder position="0 0 0" rotation="90 0 0" radius="0.012" height="0.24" color="#b0bec5" material="metalness: 0.9"></a-cylinder>
+        <a-torus position="0.025 0 0.12" radius="0.028" radius-tubular="0.007" color="#90a4ae"></a-torus>
+        <a-torus position="-0.025 0 0.12" radius="0.028" radius-tubular="0.007" color="#90a4ae"></a-torus>
+      </a-entity>
+
+      <!-- Gasas Quirúrgicas y Suturas Estériles -->
+      <a-box 
+        class="interactivo" 
+        position="0.32 1.22 0.1" 
+        width="0.14" height="0.04" depth="0.14" 
+        color="#ffffff" 
+        data-info="Paquete de compresas y gasas radiopacas estériles listas" 
+        data-sound="action">
+      </a-box>
+      <!-- Portaagujas con sutura de seda curva -->
+      <a-torus 
+        class="interactivo" 
+        position="0.32 1.22 -0.15" 
+        rotation="90 0 0" 
+        radius="0.05" 
+        radius-tubular="0.006" 
+        arc="180" 
+        color="#424242" 
+        data-info="Sutura quirúrgica con aguja curva atraumática lista para cierre" 
+        data-sound="action">
+      </a-torus>
+    </a-entity>
+
+    <!-- ==========================================
+         MÁQUINA DE ANESTESIA & SOPORTE VITAL
+         ========================================== -->
+    <a-entity position="-1.7 0 -3.6" rotation="0 20 0">
+      <!-- Mueble principal con ruedas -->
+      <a-box position="0 0.8 0" width="1.2" height="1.5" depth="0.75" color="#37474f"></a-box>
+      <a-box position="0 0.85 0.05" width="1.1" height="1.3" depth="0.65" color="#546e7a"></a-box>
+      
+      <!-- Pantalla del Ventilador Pulmonar -->
+      <a-entity 
+        class="interactivo" 
+        position="0 1.7 0.1" 
+        data-info="Ventilador mecánico: Modo volumen control, VT 480 ml, PEEP 5 cmH2O" 
+        data-sound="ecg">
+        <a-box width="0.8" height="0.5" depth="0.1" color="#212121"></a-box>
+        <a-plane position="0 0 0.06" width="0.74" height="0.44" color="#004d40"></a-plane>
+        <a-text value="VENTILACION ASISTIDA" position="-0.32 0.14 0.07" scale="0.3 0.3 0.3" color="#64ffda"></a-text>
+        <a-text value="VT: 480 ml  |  FiO2: 50%" position="-0.32 0.02 0.07" scale="0.28 0.28 0.28" color="#ffffff"></a-text>
+        <a-text value="PEEP: 5 cmH2O  |  Pmax: 18" position="-0.32 -0.1 0.07" scale="0.28 0.28 0.28" color="#ffeb3b"></a-text>
+      </a-entity>
+
+      <!-- Vaporizadores de Anestesia (Amarillo = Sevoflurano, Púrpura = Isoflurano) -->
+      <a-cylinder 
+        class="interactivo" 
+        position="-0.3 1.25 0.42" 
+        radius="0.1" height="0.35" 
+        color="#fbc02d" 
+        data-info="Vaporizador de Sevoflurano calibrado al 2.0% (Anestésico inhalatorio)" 
+        data-sound="action">
+      </a-cylinder>
+      <a-cylinder 
+        class="interactivo" 
+        position="0 1.25 0.42" 
+        radius="0.1" height="0.35" 
+        color="#7b1fa2" 
+        data-info="Vaporizador de Isoflurano en standby de reserva" 
+        data-sound="action">
+      </a-cylinder>
+
+      <!-- Cilindros de Gases Medicinales Traseros (Verde = O2, Azul = N2O) -->
+      <a-cylinder position="0.35 0.7 -0.45" radius="0.12" height="1.2" color="#2e7d32"></a-cylinder>
+      <a-cylinder position="0.05 0.7 -0.45" radius="0.12" height="1.2" color="#1565c0"></a-cylinder>
+    </a-entity>
+
+    <!-- ==========================================
+         PORTA-SUERO INTRAVENOSO (TRIPIE IV)
+         ========================================== -->
+    <a-entity position="-1.5 0 -0.4">
+      <a-cylinder position="0 0.05 0" radius="0.3" height="0.08" color="#263238"></a-cylinder>
+      <a-cylinder position="0 1.1 0" radius="0.025" height="2.1" color="#cfd8dc" material="metalness: 0.9"></a-cylinder>
+      <!-- Ganchos superiores -->
+      <a-cylinder position="0 2.15 0" rotation="0 0 90" radius="0.015" height="0.4" color="#cfd8dc"></a-cylinder>
+      
+      <!-- Bolsa de Solución Fisiológica IV (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="-0.15 1.95 0" 
+        data-info="Solución salina al 0.9% (Suero fisiológico): Infusión intravenosa activa a 21 gts/min" 
+        data-sound="action">
+        <!-- Bolsa translúcida -->
+        <a-box width="0.16" height="0.32" depth="0.08" color="#e0f7fa" material="opacity: 0.85"></a-box>
+        <a-plane position="0 0 0.045" width="0.12" height="0.1" color="#0288d1"></a-plane>
+        <a-text value="NaCl 0.9%" position="-0.05 0 0.05" scale="0.15 0.15 0.15" color="#ffffff"></a-text>
+        <!-- Cámara de goteo y tubo que baja hacia el paciente -->
+        <a-cylinder position="0 -0.2 0" radius="0.018" height="0.08" color="#b2ebf2"></a-cylinder>
+        <a-cylinder position="0 -0.45 0" radius="0.006" height="0.4" color="#eceff1"></a-cylinder>
+      </a-entity>
+    </a-entity>
+
+    <!-- ==========================================
+         NEGATOSCOPIO (PANTALLA DE RAYOS X EN PARED)
+         ========================================== -->
+    <a-entity 
+      class="interactivo" 
+      position="4 2.6 -8.7" 
+      data-info="Negatoscopio con Radiografía de Tórax: Campos pulmonares transparentes y silueta cardíaca normal" 
+      data-sound="action">
+      <a-box width="2.2" height="1.4" depth="0.1" color="#212121"></a-box>
+      <a-plane position="0 0 0.06" width="2.05" height="1.25" color="#e0f7fa" material="emissive: #e0f7fa; emissiveIntensity: 0.7"></a-plane>
+      <!-- Silueta de Radiografía de Tórax simplificada en relieve -->
+      <a-box position="0 0.05 0.07" width="0.25" height="0.9" depth="0.01" color="#90a4ae"></a-box>
+      <a-box position="-0.4 0.1 0.07" width="0.45" height="0.6" depth="0.01" color="#546e7a"></a-box>
+      <a-box position="0.4 0.1 0.07" width="0.45" height="0.6" depth="0.01" color="#546e7a"></a-box>
+      <a-text value="RX TORAX POSTERO-ANTERIOR" position="-0.85 -0.5 0.08" scale="0.32 0.32 0.32" color="#006064"></a-text>
+    </a-entity>
+
+    <!-- Vitrina de Medicamentos y Desfibrilador en Pared Lateral -->
+    <a-box position="11.7 2.4 -2" rotation="0 -90 0" width="2.6" height="3" depth="0.5" color="#37474f"></a-box>
+    <a-plane position="11.44 2.4 -2" rotation="0 -90 0" width="2.4" height="2.8" color="#b2ebf2" material="opacity: 0.65; metalness: 0.7"></a-plane>
+    <a-text value="VITRINA DE FARMACOS & URGENCIA" position="11.4 3.7 -0.8" rotation="0 -90 0" scale="0.38 0.38 0.38" color="#004d40"></a-text>
+
+  </a-scene>
+
+  <!-- Script interactivo del simulador -->
+  <script src="app.js"></script>
+</body>
+</html>

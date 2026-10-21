@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura: Taller de Diseño & Maquetas 3D | Vision Mind</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+
+  <!-- Panel HUD Interactivo de Arquitectura -->
+  <div class="panel">
+    <div class="panel-header-badge">
+      <span>🏛️</span> DISEÑO URBANO &amp; ESTRUCTURAS SOSTENIBLES
+    </div>
+    <h2>📐 Arquitectura: Estudio 3D</h2>
+    
+    <p>
+      Bienvenido al taller de diseño arquitectónico y bioclimático. Con el mouse gira tu ángulo visual y con <strong>WASD</strong> o las <strong>flechas</strong> explora las mesas de trabajo.
+    </p>
+    <p>
+      Apunta con el cursor a la maqueta central, a los planos técnicos, al escalímetro y a los materiales para examinarlos.
+    </p>
+    
+    <div class="panel-stat">
+      <span>Elementos proyectuales analizados:</span>
+      <span id="contador">0</span>
+    </div>
+    
+    <div id="feedback" class="hud-feedback">
+      Apunta a la maqueta arquitectónica o al plano para comenzar el análisis...
+    </div>
+
+    <div class="panel-controls-hint">
+      <span>🎯 Cursor activo</span> &bull; <span>🏙️ Torre bioclimática en escala 1:100</span>
+    </div>
+  </div>
+
+  <a-scene>
+    <!-- CÁMARA CON CURSOR INTERACTIVO -->
+    <a-entity position="0 1.6 3.2">
+      <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 22">
+        <a-cursor
+          id="cursor"
+          color="#00f5d4"
+          fuse="true"
+          fuse-timeout="700"
+          raycaster="objects: .interactivo, .producto"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 700; from: 1 1 1; to: 0.2 0.2 0.2"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeOutCubic; dur: 200; to: 1 1 1">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- ILUMINACIÓN AMBIENTAL NATURAL DE ESTUDIO -->
+    <a-light type="ambient" color="#f5f5f5" intensity="0.95"></a-light>
+    
+    <!-- LUZ DIRIGIDA CENITAL SOBRE LA MAQUETA CENTRAL -->
+    <a-light 
+      type="spot" 
+      position="0 5.5 -1.2" 
+      target="#maqueta-foco" 
+      angle="40" 
+      penumbra="0.25" 
+      color="#ffffff" 
+      intensity="2.6">
+    </a-light>
+    <a-entity id="maqueta-foco" position="0 1.2 -1.2"></a-entity>
+
+    <!-- ==========================================
+         PISO DE HORMIGÓN PULIDO Y ESTRUCTURA DEL ESTUDIO
+         ========================================== -->
+    <!-- Piso de hormigón pulido gris arquitectónico -->
+    <a-plane 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#b0bec5" 
+      material="roughness: 0.35; metalness: 0.1">
+    </a-plane>
+
+    <!-- Pared Frontal con Gran Ventanal Panorámico a la Ciudad -->
+    <a-box position="0 4 -8" width="26" height="8" depth="0.4" color="#eceff1"></a-box>
+    
+    <!-- Ventanal con vista al Skyline Urbano -->
+    <a-plane position="0 3.8 -7.78" width="16" height="4.5" color="#90caf9" material="opacity: 0.6"></a-plane>
+    <!-- Silueta de rascacielos de fondo -->
+    <a-box position="-5 3.5 -7.7" width="2" height="3.8" depth="0.05" color="#546e7a"></a-box>
+    <a-box position="-2.2 4.2 -7.7" width="1.8" height="5.2" depth="0.05" color="#455a64"></a-box>
+    <a-box position="1.5 3.2 -7.7" width="2.4" height="3.2" depth="0.05" color="#546e7a"></a-box>
+    <a-box position="5.2 4.0 -7.7" width="2.2" height="4.8" depth="0.05" color="#37474f"></a-box>
+
+    <a-text 
+      value="TALLER DE PROYECTOS ARQUITECTONICOS & MASTERPLAN URBANO" 
+      position="0 6.6 -7.7" 
+      align="center" 
+      scale="0.85 0.85 0.85" 
+      color="#263238">
+    </a-text>
+
+    <!-- Paredes Laterales -->
+    <a-box position="-11 4 0" rotation="0 90 0" width="20" height="8" depth="0.4" color="#f5f5f5"></a-box>
+    <a-box position="11 4 0" rotation="0 -90 0" width="20" height="8" depth="0.4" color="#f5f5f5"></a-box>
+
+    <!-- ==========================================
+         PEDESTAL Y GRAN MAQUETA ARQUITECTÓNICA 3D
+         ========================================== -->
+    <!-- Pedestal minimalista blanco -->
+    <a-cylinder position="0 0.45 -1.2" radius="1.3" height="0.9" color="#ffffff" material="roughness: 0.2"></a-cylinder>
+    <!-- Base de madera de nogal para la maqueta -->
+    <a-box position="0 0.93 -1.2" width="2.1" height="0.06" depth="2.1" color="#5d4037"></a-box>
+
+    <!-- MAQUETA 3D DE RASCACIELOS BIOCLIMÁTICO (Interactivo) -->
+    <a-entity 
+      class="interactivo" 
+      position="0 0.96 -1.2" 
+      data-info="Maqueta de Torre Bioclimática: Estructura helicoidal con jardines verticales y paneles solares bifaciales" 
+      data-sound="metal"
+      animation="property: rotation; to: 0 360 0; loop: true; dur: 22000; easing: linear">
+      
+      <!-- Nivel Cimientos / Podio urbano -->
+      <a-box position="0 0.15 0" width="1.2" height="0.3" depth="1.2" color="#cfd8dc" material="roughness: 0.4"></a-box>
+      
+      <!-- Torre Nivel Inferior -->
+      <a-box position="0 0.6 0" width="0.8" height="0.6" depth="0.8" color="#80deea" material="opacity: 0.85; metalness: 0.3"></a-box>
+      <a-box position="0 0.9 0" width="0.85" height="0.04" depth="0.85" color="#ffffff"></a-box>
+      
+      <!-- Nivel Jardín Colgante (Skygarden) -->
+      <a-cylinder position="0 0.95 0" radius="0.38" height="0.06" color="#4caf50"></a-cylinder>
+      <a-sphere position="0.25 1.05 0.1" radius="0.07" color="#2e7d32"></a-sphere>
+      <a-sphere position="-0.25 1.05 -0.1" radius="0.07" color="#2e7d32"></a-sphere>
+
+      <!-- Torre Nivel Medio con Giro Torsional -->
+      <a-box position="0 1.45 0" rotation="0 25 0" width="0.65" height="0.9" depth="0.65" color="#4dd0e1" material="opacity: 0.85; metalness: 0.4"></a-box>
+      <a-box position="0 1.9 0" rotation="0 25 0" width="0.7" height="0.04" depth="0.7" color="#ffffff"></a-box>
+
+      <!-- Aguja y Cubierta Bioclimática Superior -->
+      <a-cone position="0 2.25 0" radius-bottom="0.25" height="0.65" color="#00bcd4" material="opacity: 0.9"></a-cone>
+      <a-cylinder position="0 2.7 0" radius="0.015" height="0.5" color="#ffffff" material="metalness: 0.9"></a-cylinder>
+    </a-entity>
+
+    <!-- ==========================================
+         MESA DE DIBUJO TÉCNICO INCLINADA CON PLANOS
+         ========================================== -->
+    <a-entity position="-2.4 0 -0.8" rotation="0 35 0">
+      <!-- Soporte de mesa de madera regulable -->
+      <a-box position="0 0.5 0" width="1.4" height="1.0" depth="0.9" color="#4e342e"></a-box>
+      
+      <!-- Tablero de dibujo inclinado a 20 grados -->
+      <a-box position="0 1.05 0" rotation="20 0 0" width="1.5" height="0.05" depth="1.0" color="#f5f5f5"></a-box>
+
+      <!-- PLANO TÉCNICO ARQUITECTÓNICO (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0 1.1 0" 
+        rotation="20 0 0" 
+        data-info="Plano de distribución y cálculo estructural: Distribución de núcleos de carga y circulaciones" 
+        data-sound="action">
+        
+        <!-- Papel del plano en azul cian / blanco -->
+        <a-plane width="1.3" height="0.85" color="#e3f2fd"></a-plane>
+        <a-plane position="0 0 0.005" width="1.2" height="0.75" color="#bbdefb"></a-plane>
+        
+        <!-- Líneas y cuadrícula de cotas estructurales -->
+        <a-box position="0 0 0.01" width="0.95" height="0.01" depth="0.005" color="#1565c0"></a-box>
+        <a-box position="0 0 0.01" width="0.01" height="0.65" depth="0.005" color="#1565c0"></a-box>
+        <a-text value="PLANTA NIVEL +12.00  |  ESC 1:50" position="-0.55 -0.3 0.015" scale="0.24 0.24 0.24" color="#0d47a1"></a-text>
+      </a-entity>
+
+      <!-- HERRAMIENTA 1: Escalímetro Triangular (Interactivo) -->
+      <a-cylinder 
+        class="interactivo" 
+        position="-0.5 1.14 0.25" 
+        rotation="20 30 0" 
+        radius="0.02" height="0.45" 
+        color="#ffffff" 
+        data-info="Escalímetro profesional de precisión: Escalas 1:20, 1:50, 1:100 y 1:500 verificadas" 
+        data-sound="metal">
+      </a-cylinder>
+
+      <!-- HERRAMIENTA 2: Lámpara Flexo Articulada de Arquitecto (Interactivo) -->
+      <a-entity 
+        class="interactivo" 
+        position="0.65 1.15 -0.35" 
+        data-info="Lámpara flexo de dibujo arquitectónico encendida: Luz focal sobre el tablero" 
+        data-sound="action">
+        <a-cylinder radius="0.08" height="0.05" color="#212121"></a-cylinder>
+        <a-cylinder position="0 0.3 0" rotation="15 0 0" radius="0.015" height="0.6" color="#e0e0e0"></a-cylinder>
+        <a-cone position="-0.15 0.55 0.1" rotation="45 -40 0" radius-bottom="0.12" height="0.18" color="#d32f2f"></a-cone>
+      </a-entity>
+    </a-entity>
+
+    <!-- ==========================================
+         MUESTRARIO DE MATERIALES CONSTRUCTIVOS
+         ========================================== -->
+    <a-entity position="2.4 0 -0.8" rotation="0 -35 0">
+      <a-box position="0 0.5 0" width="1.4" height="1.0" depth="0.8" color="#37474f"></a-box>
+      <a-box position="0 1.02 0" width="1.45" height="0.05" depth="0.85" color="#cfd8dc" material="metalness: 0.6"></a-box>
+
+      <!-- MUESTRA 1: Bloque de Hormigón Arquitectónico Visto (Interactivo) -->
+      <a-box 
+        class="interactivo" 
+        position="-0.4 1.15 0" 
+        width="0.25" height="0.2" depth="0.25" 
+        color="#9e9e9e" 
+        material="roughness: 0.9" 
+        data-info="Muestra de hormigón reforzado de alta resistencia f'c = 350 kg/cm2 con agregado reciclado" 
+        data-sound="action">
+      </a-box>
+
+      <!-- MUESTRA 2: Madera Laminada de Roble Sostenible (Interactivo) -->
+      <a-box 
+        class="interactivo" 
+        position="0 1.15 0" 
+        width="0.25" height="0.2" depth="0.25" 
+        color="#8d6e63" 
+        material="roughness: 0.6" 
+        data-info="Madera contralaminada (CLT) certificada FSC con baja huella de carbono" 
+        data-sound="action">
+      </a-box>
+
+      <!-- MUESTRA 3: Panel de Vidrio Fotovoltaico Transparente (Interactivo) -->
+      <a-box 
+        class="interactivo" 
+        position="0.4 1.15 0" 
+        width="0.25" height="0.2" depth="0.25" 
+        color="#80deea" 
+        material="opacity: 0.75; metalness: 0.5" 
+        data-info="Vidrio fotovoltaico con células solares integradas (BIPV) para fachadas activas" 
+        data-sound="metal">
+      </a-box>
+    </a-entity>
+
+    <!-- CUADROS DE RENDERS Y PLANIMETRÍA EN PARED LATERAL -->
+    <a-entity position="-10.7 2.8 0" rotation="0 90 0">
+      <a-box width="2.4" height="1.6" depth="0.08" color="#212121"></a-box>
+      <a-plane position="0 0 0.05" width="2.2" height="1.4" color="#eceff1"></a-plane>
+      <a-text value="CONCURSO INTERNACIONAL\nDISTRITO BIOCLIMATICO 2030\nPRIMER PREMIO" position="-0.95 0.2 0.06" scale="0.35 0.35 0.35" color="#00695c"></a-text>
+    </a-entity>
+
+  </a-scene>
+
+  <!-- Script interactivo del simulador -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Mind | Acceso Seguro & Registro</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="icon" type="image/png" href="img/vision_mind_logo.png">
+</head>
+<body>
+
+  <!-- Lienzo interactivo de partículas cuánticas -->
+  <canvas id="cyber-canvas"></canvas>
+
+  <!-- Rejilla y resplandor ambiental -->
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- Barra de navegación superior -->
+  <header class="cyber-header-nav">
+    <a href="Index.html" class="back-link">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+      VOLVER A VISION MIND
+    </a>
+
+    <div class="system-status-indicator">
+      <span class="status-dot"></span>
+      TERMINAL SEGURA EN LÍNEA
+    </div>
+  </header>
+
+  <!-- Contenedor Principal de Autenticación -->
+  <main class="main-auth-container">
+    <div class="auth-card-wrapper">
+      <div class="cyber-card-glow-bar"></div>
+
+      <!-- Encabezado de la Marca y Logo Futurista -->
+      <div class="auth-brand-header">
+        <div class="logo-hologram-frame">
+          <div class="orbit-ring ring-1"></div>
+          <div class="orbit-ring ring-2"></div>
+          <img src="img/vision_mind_logo.png" alt="Logo Vision Mind" width="96" height="96">
+        </div>
+
+        <h1 class="brand-title">VISION MIND</h1>
+        <p class="brand-tagline">Descubre tu pasión • <span class="highlight-tag">Construye tu futuro</span></p>
+      </div>
+
+      <!-- Pestañas de Cambio de Modo (Iniciar Sesión / Crear Cuenta) -->
+      <nav class="auth-mode-tabs" aria-label="Selector de autenticación">
+        <button type="button" class="tab-btn active" data-mode="login">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+          </svg>
+          INICIAR SESIÓN
+        </button>
+        <button type="button" class="tab-btn" data-mode="register">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          </svg>
+          CREAR CUENTA
+        </button>
+      </nav>
+
+      <!-- ===================================================================
+           PANEL 1: INICIAR SESIÓN
+           =================================================================== -->
+      <section id="panel-login" class="form-panel active">
+        <!-- Selector de Ingreso: Correo vs Teléfono -->
+        <div class="login-method-selector">
+          <button type="button" class="method-btn active" data-method="email">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            Correo Electrónico
+          </button>
+          <button type="button" class="method-btn" data-method="phone">
+            <svg viewBox="0 0 24 24">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+            Número de Teléfono
+          </button>
+        </div>
+
+        <form id="form-login" novalidate>
+          <!-- Campo Correo Electrónico -->
+          <div class="cyber-input-group" id="login-email-group">
+            <label class="input-label" for="login-email">
+              <span>Correo Electrónico</span>
+              <span class="label-tag">REQUERIDO</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+              </span>
+              <input 
+                type="email" 
+                id="login-email" 
+                class="cyber-input" 
+                placeholder="usuario@visionmind.com" 
+                autocomplete="email"
+                required>
+            </div>
+          </div>
+
+          <!-- Campo Teléfono Móvil (Alternativo) -->
+          <div class="cyber-input-group" id="login-phone-group" style="display: none;">
+            <label class="input-label" for="login-phone">
+              <span>Número Telefónico</span>
+              <span class="label-tag">MÓVIL</span>
+            </label>
+            <div class="phone-input-row">
+              <select id="login-country-code" class="country-code-select" aria-label="Código de País">
+                <option value="+57">🇨🇴 +57</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+51">🇵🇪 +51</option>
+              </select>
+              <div class="input-wrapper">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                  </svg>
+                </span>
+                <input 
+                  type="tel" 
+                  id="login-phone" 
+                  class="cyber-input" 
+                  placeholder="300 123 4567" 
+                  autocomplete="tel">
+              </div>
+            </div>
+          </div>
+
+          <!-- Campo Contraseña -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="login-password">
+              <span>Clave de Acceso</span>
+              <span class="label-tag">ENCRIPTADA</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+              </span>
+              <input 
+                type="password" 
+                id="login-password" 
+                class="cyber-input" 
+                placeholder="••••••••••••" 
+                autocomplete="current-password"
+                required>
+              <button type="button" class="toggle-password-btn" data-target="login-password" title="Ver contraseña" aria-label="Mostrar contraseña">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zm0-7a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Opciones extras -->
+          <div class="form-extra-options">
+            <label class="cyber-checkbox-label">
+              <input type="checkbox" id="remember-me" checked>
+              <span>Recordar terminal</span>
+            </label>
+            <a href="#" class="forgot-password-link" onclick="event.preventDefault(); showToast('Enlace de recuperación enviado al contacto registrado', 'info');">¿Olvidaste tu clave?</a>
+          </div>
+
+          <!-- Botón de Entrada Principal -->
+          <button type="submit" class="btn-cyber-submit">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
+            </svg>
+            INGRESAR AL SISTEMA
+          </button>
+        </form>
+
+        <div class="cyber-divider">
+          <span>O REGÍSTRATE</span>
+        </div>
+
+        <p class="auth-footer-note">
+          ¿Aún no tienes cuenta? <a href="#" data-switch-to="register">Crea tu cuenta de Vision Mind</a>
+        </p>
+      </section>
+
+      <!-- ===================================================================
+           PANEL 2: CREAR CUENTA
+           =================================================================== -->
+      <section id="panel-register" class="form-panel">
+        <form id="form-register" novalidate>
+          <!-- Nombre Completo -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="reg-fullname">
+              <span>Nombre Completo</span>
+              <span class="label-tag">IDENTIDAD</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </span>
+              <input 
+                type="text" 
+                id="reg-fullname" 
+                class="cyber-input" 
+                placeholder="Ej. Alexander Phoenix" 
+                autocomplete="name"
+                required>
+            </div>
+          </div>
+
+          <!-- Correo Electrónico -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="reg-email">
+              <span>Correo Electrónico</span>
+              <span class="label-tag">VERIFICACIÓN</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+              </span>
+              <input 
+                type="email" 
+                id="reg-email" 
+                class="cyber-input" 
+                placeholder="alexander@correo.com" 
+                autocomplete="email"
+                required>
+            </div>
+          </div>
+
+          <!-- Número Telefónico -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="reg-phone">
+              <span>Número de Teléfono</span>
+              <span class="label-tag">MÓVIL</span>
+            </label>
+            <div class="phone-input-row">
+              <select id="reg-country-code" class="country-code-select" aria-label="Código de País">
+                <option value="+57">🇨🇴 +57</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+51">🇵🇪 +51</option>
+              </select>
+              <div class="input-wrapper">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                  </svg>
+                </span>
+                <input 
+                  type="tel" 
+                  id="reg-phone" 
+                  class="cyber-input" 
+                  placeholder="300 000 0000" 
+                  autocomplete="tel"
+                  required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contraseña -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="reg-password">
+              <span>Crear Contraseña</span>
+              <span class="label-tag">SEGURIDAD</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+              </span>
+              <input 
+                type="password" 
+                id="reg-password" 
+                class="cyber-input" 
+                placeholder="Mínimo 8 caracteres" 
+                autocomplete="new-password"
+                required>
+              <button type="button" class="toggle-password-btn" data-target="reg-password" title="Ver contraseña" aria-label="Mostrar contraseña">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zm0-7a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Medidor de fortaleza -->
+            <div class="password-strength-bar">
+              <div id="strength-fill" class="strength-fill"></div>
+            </div>
+            <span id="strength-text" class="strength-text">Introduce tu contraseña</span>
+          </div>
+
+          <!-- Confirmar Contraseña -->
+          <div class="cyber-input-group">
+            <label class="input-label" for="reg-confirm-password">
+              <span>Confirmar Contraseña</span>
+              <span class="label-tag">VALIDACIÓN</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+              </span>
+              <input 
+                type="password" 
+                id="reg-confirm-password" 
+                class="cyber-input" 
+                placeholder="Repite tu contraseña" 
+                autocomplete="new-password"
+                required>
+              <button type="button" class="toggle-password-btn" data-target="reg-confirm-password" title="Ver contraseña" aria-label="Mostrar contraseña">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zm0-7a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Términos y Condiciones -->
+          <div class="form-extra-options">
+            <label class="cyber-checkbox-label">
+              <input type="checkbox" id="reg-terms" required>
+              <span>Acepto los términos del sistema y privacidad</span>
+            </label>
+          </div>
+
+          <!-- Botón de Registro Principal -->
+          <button type="submit" class="btn-cyber-submit btn-register-accent">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            CREAR CUENTA NUEVA
+          </button>
+        </form>
+
+        <div class="cyber-divider">
+          <span>O ACCEDE</span>
+        </div>
+
+        <p class="auth-footer-note">
+          ¿Ya tienes cuenta activa? <a href="#" data-switch-to="login">Inicia sesión en tu terminal</a>
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
