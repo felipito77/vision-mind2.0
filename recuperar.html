@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision Mind | Recuperar Contrasena</title>
+<link rel="stylesheet" href="login.css">
+<link rel="icon" type="image/png" href="img/vision_mind_logo.png">
+</head>
+<body>
+<canvas id="cyber-canvas"></canvas>
+<div class="cyber-grid-overlay"></div>
+<header class="cyber-header-nav">
+<a href="login.html" class="back-link">&#8592; VOLVER AL LOGIN</a>
+<div class="system-status-indicator">
+<span class="status-dot"></span> RECUPERACION DE ACCESO
+</div>
+</header>
+<main class="main-auth-container">
+<div class="auth-card-wrapper">
+<div class="cyber-card-glow-bar"></div>
+<div class="auth-brand-header">
+<div class="logo-hologram-frame">
+<div class="orbit-ring ring-1"></div>
+<div class="orbit-ring ring-2"></div>
+<img src="img/vision_mind_logo.png" alt="Logo" width="96" height="96">
+</div>
+<h1 class="brand-title">VISION MIND</h1>
+<p class="brand-tagline">Recuperacion de <span class="highlight-tag">Contrasena</span></p>
+</div>
+<section class="form-panel active">
+<p style="color:var(--blanco-dim);text-align:center;margin-bottom:1.5rem;">
+Ingresa tu correo registrado y te enviaremos un enlace para restablecer tu contrasena.
+</p>
+<form id="form-recuperar" novalidate>
+<div class="cyber-input-group">
+<label class="input-label" for="rec-email">
+<span>Correo Electronico</span>
+<span class="label-tag">VERIFICACION</span>
+</label>
+<div class="input-wrapper">
+<span class="input-icon">
+<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+</span>
+<input type="email" id="rec-email" class="cyber-input"
+  placeholder="tu@correo.com" autocomplete="email" required>
+</div>
+</div>
+<button type="submit" id="btn-enviar" class="btn-cyber-submit">
+<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+</svg>
+ENVIAR ENLACE DE RECUPERACION
+</button>
+<p id="mensaje-rec" style="margin-top:1rem;text-align:center;font-weight:600;"></p>
+</form>
+<div class="cyber-divider"><span>O REGRESA</span></div>
+<p class="auth-footer-note">
+Ya recordaste tu clave? <a href="login.html">Inicia sesion</a>
+</p>
+</section>
+</div>
+</main>
+<script type="module" src="recuperar.js"></script>
+</body>
+</html>

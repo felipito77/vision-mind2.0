@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision Mind | Admin</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="icon" type="image/png" href="img/vision_mind_logo.png">
+</head>
+<body class="es-admin">
+<header class="admin-header">
+<div class="admin-header-inner">
+<a href="index.html" class="admin-brand">
+<img src="img/vision_mind_logo.png" alt="Logo" width="40" height="40">
+<span>VISION MIND</span>
+</a>
+<nav class="admin-nav">
+<a href="index.html" class="admin-nav-link">Volver al sitio</a>
+<span id="sesion" class="admin-sesion-badge"></span>
+<button id="btn-logout" class="admin-btn-logout">Cerrar sesion</button>
+</nav>
+</div>
+</header>
+<main id="admin-main">
+<p class="aviso-admin" id="aviso" hidden>
+Esta pagina es solo para administradores.
+</p>
+<div id="contenido" hidden>
+<section class="panel-admin">
+<h2 id="tituloFormulario">Agregar usuario</h2>
+<form id="formUsuario" class="form-panel-admin" autocomplete="off">
+<input type="hidden" id="idUsuario">
+<div class="campo-admin">
+<label for="nombre">Nombre</label>
+<input type="text" id="nombre" required>
+</div>
+<div class="campo-admin">
+<label for="email">Correo</label>
+<input type="email" id="email" autocomplete="off" required>
+</div>
+<div class="campo-admin">
+<label for="password">Contrasena</label>
+<input type="password" id="password" minlength="6" required>
+</div>
+<div class="campo-admin">
+<label for="rol">Rol</label>
+<select id="rol">
+<option value="usuario">usuario</option>
+<option value="admin">admin</option>
+</select>
+</div>
+<div class="acciones-admin">
+<button type="submit" id="guardar" class="btn-admin-primary">Agregar usuario</button>
+<button type="button" id="cancelar" class="btn-admin-secondary" hidden>Cancelar</button>
+</div>
+<p class="mensaje-admin" id="mensaje"></p>
+</form>
+<hr class="admin-divider">
+<h2>Usuarios registrados</h2>
+<div class="tabla-wrapper">
+<table class="tabla-usuarios">
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Correo</th>
+<th>Rol</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody id="listaUsuarios"></tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<script type="module" src="sesion.js"></script>
+<script type="module" src="admin.js"></script>
+</body>
+</html>
